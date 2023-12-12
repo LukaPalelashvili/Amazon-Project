@@ -1,0 +1,142 @@
+.cart {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  left: 25%;
+  padding: 2.5rem;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #000000;
+}
+
+.cart-header {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+.close {
+  position: absolute;
+  top: 2.5rem;
+  right: 4rem;
+}
+
+.close-button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #1f2937;
+}
+
+.close-button:hover {
+  background-color: #374151;
+}
+
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.cart-img {
+  border-radius: 0.375rem;
+  width: 6rem;
+  height: 6rem;
+}
+
+.cart-text {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.cart-item-name {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
+.cart-item-price {
+  color: #4b5563;
+}
+
+.cart-quantity {
+  display: flex;
+  gap: 1rem;
+}
+
+.quantity-button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #1f2937;
+}
+
+.quantity-button:hover {
+  background-color: #374151;
+}
+
+.cart-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-header {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
+.total-button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #1f2937;
+}
+
+.total-button:hover {
+  background-color: #374151;
+}
