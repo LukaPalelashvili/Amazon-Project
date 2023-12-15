@@ -4,11 +4,17 @@ import Cart from "./Cart.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./products.css";
+import TopPanel from "./topPanel/TopPanel.jsx";
+import Input from "./searchInput/Input.jsx";
+import CategoryList from "./categoriesList/CategoriesList.jsx";
 
 export default function Products() {
   const [showModal, setshowModal] = useState(false);
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const [sortBy, setSortBy] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const toggle = () => {
     setshowModal(!showModal);
@@ -25,25 +31,47 @@ export default function Products() {
       });
   };
 
-  //   fetch('https://dummyjson.com/carts')
-  // .then(res => res.json())
-  // .then(console.log);
-
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // async function getProducts() {
-  //   const response = await fetch(
-  //     "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/products"
-  //   );
-  //   const data = await response.json();
-  //   setProducts(data.products);
-  // }
+  useEffect(() => {
+    if (Object.keys(products).length > 0) {
+      setFilteredProducts(products);
+    }
+  }, [products]);
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+
+  useEffect(() => {
+    if (selectedCategory === "") {
+      setFilteredProducts(products);
+    } else {
+      const filteredByCategory = products.filter(
+        (product) => product.categoryId === selectedCategory
+      );
+      setFilteredProducts(filteredByCategory);
+    }
+  }, [selectedCategory, products]);
 
   // useEffect(() => {
-  //   getProducts();
-  // }, []);
+  //   if (Object.keys(products).length > 0) {
+  //     setFilteredProducts(products);
+  //     filterAndSortProducts(products);
+  //   }
+  // }, [products, selectedCategory, sortBy]);
+
+  const filterItems = (searchTerm) => {
+    console.log(products);
+
+    const filteredItems = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredProducts(filteredItems);
+  };
 
   const notifyAddedToCart = (item) =>
     toast.success(`${item.name} added to cart!`, {
@@ -79,10 +107,31 @@ export default function Products() {
     removeFromCart(product);
     notifyRemovedFromCart(product);
   };
+  const handleSortByChange = (sortBy) => {
+    let sortedProducts = products;
+    switch (sortBy) {
+      case "incr-by-price":
+        sortedProducts = products.sort((a, b) => a.price - b.price);
+        setProducts([...sortedProducts]);
+        break;
+      case "decr-by-price":
+        sortedProducts = products.sort((a, b) => b.price - a.price);
+        setProducts([...sortedProducts]);
+        break;
+      default:
+      // setProducts(products);
+    }
+  };
 
   return (
     <div className="main-products">
       <ToastContainer />
+      <div className="filters">
+        <TopPanel onSelectedChange={handleSortByChange} sortBy={sortBy} />
+        <Input products={filteredProducts} onChangeCallback={filterItems} />
+        <CategoryList onSelectCategory={handleCategorySelect} />
+      </div>
+
       <div className="shop-header">
         <h1 className="shop-title">Shop</h1>
         {!showModal && (
@@ -92,7 +141,7 @@ export default function Products() {
         )}
       </div>
       <div className="products-box">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product.id} className="product-card">
             <img src={product.images[0]} alt={product.name} className="" />
             <div className="product-info">

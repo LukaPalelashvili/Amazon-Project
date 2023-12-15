@@ -107,6 +107,12 @@
   background-color: #1f2937;
 }
 
+.filters {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .add-to-cart:hover {
   background-color: #374151;
 }
