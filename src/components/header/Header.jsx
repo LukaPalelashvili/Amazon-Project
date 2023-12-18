@@ -14,7 +14,7 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <p className="px-4 py-2 bg-gray-800 text-white text-xs">
-              Welcome, {auth.name}!
+              Welcome, {auth.UserName}!
             </p>
             <button onClick={logout}>Log out</button>
           </>

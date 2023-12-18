@@ -17,6 +17,7 @@ const AuthContextProvider = ({ children }) => {
         setAuth({ ...auth, ...res.data });
         setIsLoggedIn(true);
         console.log("res", res);
+        console.log(res.userName);
       })
       .catch((err) => {
         console.error(err);

@@ -23,7 +23,7 @@ const Login = () => {
       <button
         onClick={() => {
           login(data);
-          console.log("You are in");
+          console.log("You are in", data);
         }}
       >
         Log in
