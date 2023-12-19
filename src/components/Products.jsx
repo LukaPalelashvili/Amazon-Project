@@ -7,6 +7,8 @@ import "./products.css";
 import TopPanel from "./topPanel/TopPanel.jsx";
 import Input from "./searchInput/Input.jsx";
 import CategoryList from "./categoriesList/CategoriesList.jsx";
+import AddProduct from "./addProduct/AddProduct.jsx";
+import EditProduct from "./editProduct/EditProduct.jsx";
 
 export default function Products() {
   const [showModal, setshowModal] = useState(false);
@@ -15,6 +17,7 @@ export default function Products() {
   const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [editedProduct, setEditedProduct] = useState(null);
 
   const toggle = () => {
     setshowModal(!showModal);
@@ -123,6 +126,54 @@ export default function Products() {
     }
   };
 
+  useEffect(() => {
+    const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+    setProducts(storedProducts);
+  }, []);
+
+  // Save products to local storage whenever the products state changes
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
+
+  // Other existing code...
+
+  const handleAddProduct = (newProduct) => {
+    // Update the products state by adding the new product
+    setProducts([...products, newProduct]);
+    // You may also want to send a request to your API to add the product
+  };
+
+  const openEditModal = (product) => {
+    setEditedProduct(product);
+    setshowModal(true);
+  };
+
+  // Function to close the edit modal
+  const closeEditModal = () => {
+    setEditedProduct(null);
+    setshowModal(false);
+  };
+
+  // Function to save the edited product
+  const saveEditedProduct = (editedProduct) => {
+    const updatedProducts = products.map((product) =>
+      product.id === editedProduct.id ? editedProduct : product
+    );
+    setProducts(updatedProducts);
+
+    // Close the edit modal
+    closeEditModal();
+  };
+
+  const updateProduct = (updatedProduct) => {
+    const updatedProducts = products.map((product) =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    );
+    setProducts(updatedProducts);
+    closeEditModal();
+  };
+
   return (
     <div className="main-products">
       <ToastContainer />
@@ -130,6 +181,7 @@ export default function Products() {
         <TopPanel onSelectedChange={handleSortByChange} sortBy={sortBy} />
         <Input products={filteredProducts} onChangeCallback={filterItems} />
         <CategoryList onSelectCategory={handleCategorySelect} />
+        <AddProduct onAddProduct={handleAddProduct} />
       </div>
 
       <div className="shop-header">
@@ -138,6 +190,13 @@ export default function Products() {
           <button className="cart-button" onClick={toggle}>
             Cart ({cartItems.length})
           </button>
+        )}
+        {editedProduct && (
+          <EditProduct
+            product={editedProduct}
+            onSave={updateProduct}
+            onCancel={closeEditModal}
+          />
         )}
       </div>
       <div className="products-box">
@@ -151,51 +210,129 @@ export default function Products() {
               </p>
               <p className="product-price">${product.price}</p>
             </div>
-            <div className="product-button">
-              {!cartItems.find((item) => item.id === product.id) ? (
-                <button
-                  className="add-to-cart"
-                  onClick={() => {
-                    addToCart(product);
-                    notifyAddedToCart(product);
-                  }}
-                >
-                  Add to cart
-                </button>
-              ) : (
-                <div className=".cart-quantity ">
-                  <button
-                    className="cart-button"
-                    onClick={() => {
-                      addToCart(product);
-                    }}
-                  >
-                    +
+
+            {editedProduct && editedProduct.id === product.id ? (
+              // Display the edit form for the selected product
+              <div className="edit-form">
+                <label htmlFor={`editName-${product.id}`}>Name:</label>
+                <input
+                  type="text"
+                  id={`editName-${product.id}`}
+                  value={editedProduct.name}
+                  onChange={(e) =>
+                    setEditedProduct({ ...editedProduct, name: e.target.value })
+                  }
+                />
+
+                <label htmlFor={`editDescription-${product.id}`}>
+                  Description:
+                </label>
+                <textarea
+                  id={`editDescription-${product.id}`}
+                  value={editedProduct.description}
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      description: e.target.value,
+                    })
+                  }
+                ></textarea>
+
+                <label htmlFor={`editPrice-${product.id}`}>Price:</label>
+                <input
+                  type="number"
+                  id={`editPrice-${product.id}`}
+                  value={editedProduct.price}
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      price: e.target.value,
+                    })
+                  }
+                />
+
+                <label htmlFor={`editImage-${product.id}`}>Image URL:</label>
+                <input
+                  type="text"
+                  id={`editImage-${product.id}`}
+                  value={editedProduct.image}
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      image: e.target.value,
+                    })
+                  }
+                />
+
+                <div className="edit-buttons">
+                  <button onClick={() => updateProduct(editedProduct)}>
+                    Save
                   </button>
-                  <p style={{ color: "#4B5563" }}>
-                    {cartItems.find((item) => item.id === product.id).quantity}
-                  </p>
-                  <button
-                    className="cart-button"
-                    onClick={() => {
-                      const cartItem = cartItems.find(
-                        (item) => item.id === product.id
-                      );
-                      if (cartItem.quantity === 1) {
-                        handleRemoveFromCart(product);
-                      } else {
-                        removeFromCart(product);
-                      }
-                    }}
-                  >
-                    -
-                  </button>
+                  <button onClick={() => setEditedProduct(null)}>Cancel</button>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              // Display the edit button
+              <div className="product-button">
+                {!cartItems.find((item) => item.id === product.id) ? (
+                  <>
+                    <button
+                      className="add-to-cart"
+                      onClick={() => {
+                        addToCart(product);
+                        notifyAddedToCart(product);
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                    <button
+                      className="edit-product"
+                      onClick={() => setEditedProduct({ ...product })}
+                    >
+                      Edit
+                    </button>
+                  </>
+                ) : (
+                  <div className="cart-quantity">
+                    {" "}
+                    {/* Removed dot from className */}
+                    <button
+                      className="cart-button"
+                      onClick={() => {
+                        addToCart(product);
+                      }}
+                    >
+                      +
+                    </button>
+                    <p style={{ color: "#4B5563" }}>
+                      {
+                        cartItems.find((item) => item.id === product.id)
+                          .quantity
+                      }
+                    </p>
+                    <button
+                      className="cart-button"
+                      onClick={() => {
+                        const cartItem = cartItems.find(
+                          (item) => item.id === product.id
+                        );
+                        if (cartItem.quantity === 1) {
+                          handleRemoveFromCart(product);
+                        } else {
+                          removeFromCart(product);
+                        }
+                      }}
+                    >
+                      -
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
+
       <Cart showModal={showModal} toggle={toggle} />
     </div>
   );
