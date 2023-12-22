@@ -1,27 +1,17 @@
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../context/cart.jsx";
-import Cart from "./Cart.jsx";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import "./products.css";
 import TopPanel from "./topPanel/TopPanel.jsx";
 import Input from "./searchInput/Input.jsx";
 import CategoryList from "./categoriesList/CategoriesList.jsx";
 import AddProduct from "./addProduct/AddProduct.jsx";
-import EditProduct from "./editProduct/EditProduct.jsx";
 
 export default function Products() {
-  const [showModal, setshowModal] = useState(false);
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [editedProduct, setEditedProduct] = useState(null);
-
-  const toggle = () => {
-    setshowModal(!showModal);
-  };
 
   const url =
     "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/products";
@@ -76,40 +66,6 @@ export default function Products() {
     setFilteredProducts(filteredItems);
   };
 
-  const notifyAddedToCart = (item) =>
-    toast.success(`${item.name} added to cart!`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-      style: {
-        backgroundColor: "#fff",
-        color: "#000",
-      },
-    });
-
-  const notifyRemovedFromCart = (item) =>
-    toast.error(`${item.name} removed from cart!`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-      style: {
-        backgroundColor: "#000",
-        color: "#fff",
-      },
-    });
-
-  const handleRemoveFromCart = (product) => {
-    removeFromCart(product);
-    notifyRemovedFromCart(product);
-  };
   const handleSortByChange = (sortBy) => {
     let sortedProducts = products;
     switch (sortBy) {
@@ -131,47 +87,12 @@ export default function Products() {
     setProducts(storedProducts);
   }, []);
 
-  // Save products to local storage whenever the products state changes
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
   }, [products]);
 
-  // Other existing code...
-
   const handleAddProduct = (newProduct) => {
-    // Update the products state by adding the new product
     setProducts([...products, newProduct]);
-    // You may also want to send a request to your API to add the product
-  };
-
-  const openEditModal = (product) => {
-    setEditedProduct(product);
-    setshowModal(true);
-  };
-
-  // Function to close the edit modal
-  const closeEditModal = () => {
-    setEditedProduct(null);
-    setshowModal(false);
-  };
-
-  // Function to save the edited product
-  const saveEditedProduct = (editedProduct) => {
-    const updatedProducts = products.map((product) =>
-      product.id === editedProduct.id ? editedProduct : product
-    );
-    setProducts(updatedProducts);
-
-    // Close the edit modal
-    closeEditModal();
-  };
-
-  const updateProduct = (updatedProduct) => {
-    const updatedProducts = products.map((product) =>
-      product.id === updatedProduct.id ? updatedProduct : product
-    );
-    setProducts(updatedProducts);
-    closeEditModal();
   };
 
   return (
@@ -187,13 +108,11 @@ export default function Products() {
               >
                 Show filter
               </button>
-              {/* ===== Card for sidebar filter ===== */}
               <div
                 id="aside_filter"
                 className="collapse card bg-light d-lg-block mb-5"
               >
                 <CategoryList onSelectCategory={handleCategorySelect} />
-                {/* filter-group // */}
                 <article className="p-3 p-lg-4 border-bottom">
                   <a
                     href="#"
@@ -206,7 +125,6 @@ export default function Products() {
                   </a>
                   <div className="collapse show" id="collapse_aside2">
                     <div className="pt-3">
-                      {/* content */}
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -215,8 +133,7 @@ export default function Products() {
                           defaultChecked=""
                         />
                         <span className="form-check-label"> Apple </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -225,8 +142,7 @@ export default function Products() {
                           defaultChecked=""
                         />
                         <span className="form-check-label"> Asus </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -235,8 +151,7 @@ export default function Products() {
                           defaultChecked=""
                         />
                         <span className="form-check-label"> DELL </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -245,8 +160,7 @@ export default function Products() {
                           defaultChecked=""
                         />
                         <span className="form-check-label"> Lenovo </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -254,8 +168,7 @@ export default function Products() {
                           defaultValue=""
                         />
                         <span className="form-check-label"> Xiaomi </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -263,14 +176,10 @@ export default function Products() {
                           defaultValue=""
                         />
                         <span className="form-check-label"> Samsung </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
-                      {/* content .// */}
+                      </label>
                     </div>
-                  </div>{" "}
-                  {/* collapse .// */}
-                </article>{" "}
-                {/* filter-group // */}
+                  </div>
+                </article>
                 <article className="p-3 p-lg-4 border-bottom">
                   <a
                     href="#"
@@ -283,7 +192,6 @@ export default function Products() {
                   </a>
                   <div className="collapse show" id="collapse_aside3">
                     <div className="pt-3">
-                      {/* content */}
                       <input
                         type="range"
                         className="form-range"
@@ -301,8 +209,7 @@ export default function Products() {
                             placeholder="$0"
                             type="number"
                           />
-                        </div>{" "}
-                        {/* col end.// */}
+                        </div>
                         <div className="col-6">
                           <label htmlFor="max" className="form-label">
                             Max
@@ -313,19 +220,18 @@ export default function Products() {
                             placeholder="$1,0000"
                             type="number"
                           />
-                        </div>{" "}
+                        </div>
                         {/* col end.// */}
-                      </div>{" "}
+                      </div>
                       {/* row end.// */}
                       <button className="btn btn-light w-100" type="button">
                         Apply
                       </button>
                       {/* content .// */}
                     </div>
-                  </div>{" "}
-                  {/* collapse .// */}
-                </article>{" "}
-                {/* filter-group // */}
+                  </div>
+                </article>
+
                 <article className="p-3 p-lg-4 border-bottom">
                   <a
                     href="#"
@@ -338,33 +244,30 @@ export default function Products() {
                   </a>
                   <div className="collapse show" id="collapse_aside4">
                     <div className="pt-3">
-                      {/* content */}
                       <label className="checkbox-btn mb-2">
-                        <input type="checkbox" />{" "}
+                        <input type="checkbox" />
                         <span className="btn btn-light"> Red </span>
                       </label>
                       <label className="checkbox-btn mb-2">
-                        <input type="checkbox" />{" "}
+                        <input type="checkbox" />
                         <span className="btn btn-light"> Black </span>
                       </label>
                       <label className="checkbox-btn mb-2">
-                        <input type="checkbox" />{" "}
+                        <input type="checkbox" />
                         <span className="btn btn-light"> Blue </span>
                       </label>
                       <label className="checkbox-btn mb-2">
-                        <input type="checkbox" />{" "}
+                        <input type="checkbox" />
                         <span className="btn btn-light"> Brown </span>
                       </label>
                       <label className="checkbox-btn mb-2">
-                        <input type="checkbox" />{" "}
+                        <input type="checkbox" />
                         <span className="btn btn-light"> Silver </span>
                       </label>
-                      {/* content .// */}
                     </div>
-                  </div>{" "}
-                  {/* collapse .// */}
-                </article>{" "}
-                {/* filter-group // */}
+                  </div>
+                </article>
+
                 <article className="p-3 p-lg-4">
                   <a
                     href="#"
@@ -377,7 +280,6 @@ export default function Products() {
                   </a>
                   <div className="collapse show" id="collapse_aside5">
                     <div className="pt-3">
-                      {/* content */}
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -393,7 +295,6 @@ export default function Products() {
                               <img src="images/misc/stars-active.svg" alt="" />
                             </li>
                             <li>
-                              {" "}
                               <img
                                 src="images/misc/starts-disable.svg"
                                 alt=""
@@ -401,8 +302,8 @@ export default function Products() {
                             </li>
                           </ul>
                         </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
+
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -418,7 +319,6 @@ export default function Products() {
                               <img src="images/misc/stars-active.svg" alt="" />
                             </li>
                             <li>
-                              {" "}
                               <img
                                 src="images/misc/starts-disable.svg"
                                 alt=""
@@ -426,8 +326,8 @@ export default function Products() {
                             </li>
                           </ul>
                         </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
+
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -443,7 +343,6 @@ export default function Products() {
                               <img src="images/misc/stars-active.svg" alt="" />
                             </li>
                             <li>
-                              {" "}
                               <img
                                 src="images/misc/starts-disable.svg"
                                 alt=""
@@ -451,8 +350,8 @@ export default function Products() {
                             </li>
                           </ul>
                         </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
+                      </label>
+
                       <label className="form-check mb-2">
                         <input
                           className="form-check-input"
@@ -468,7 +367,6 @@ export default function Products() {
                               <img src="images/misc/stars-active.svg" alt="" />
                             </li>
                             <li>
-                              {" "}
                               <img
                                 src="images/misc/starts-disable.svg"
                                 alt=""
@@ -476,19 +374,12 @@ export default function Products() {
                             </li>
                           </ul>
                         </span>
-                      </label>{" "}
-                      {/* form-check end.// */}
-                      {/* content .// */}
+                      </label>
                     </div>
-                  </div>{" "}
-                  {/* collapse .// */}
-                </article>{" "}
-                {/* filter-group // */}
-              </div>{" "}
-              {/* card.// */}
-              {/* ===== Card for sidebar filter .// ===== */}
-            </aside>{" "}
-            {/* col .// */}
+                  </div>
+                </article>
+              </div>
+            </aside>
             <main className="col-lg-9">
               <header className="d-md-flex align-items-center border-bottom mb-3 pb-3">
                 <div className="btn-group mb-3 mb-md-0">
@@ -528,11 +419,9 @@ export default function Products() {
                     >
                       <i className="fa fa-th" />
                     </a>
-                  </div>{" "}
-                  {/* btn-group end.// */}
+                  </div>
                 </div>
               </header>
-              {/* ========= content items ========= */}
               {filteredProducts.map((product) => (
                 <article className="card-product-list border-bottom pb-3 mb-3">
                   <div className="row">
@@ -546,23 +435,15 @@ export default function Products() {
                     </aside>
                     <div className="col-xl-9 col-md-8">
                       {!cartItems.find((item) => item.id === product.id) ? (
-                        <>
-                          <button
-                            className="add-to-cart"
-                            onClick={() => {
-                              addToCart(product);
-                              notifyAddedToCart(product);
-                            }}
-                          >
-                            Add to cart
-                          </button>
-                          <button
-                            className="edit-product"
-                            onClick={() => openEditModal(product)}
-                          >
-                            Edit
-                          </button>
-                        </>
+                        <button
+                          className="add-to-cart"
+                          onClick={() => {
+                            addToCart(product);
+                            notifyAddedToCart(product);
+                          }}
+                        >
+                          Add to cart
+                        </button>
                       ) : (
                         <div className=".cart-quantity ">
                           <button
@@ -619,11 +500,10 @@ export default function Products() {
                         <span className="label-rating text-success">
                           Free shipping
                         </span>
-                      </div>{" "}
+                      </div>
                       <div className="mb-3 h5">
                         <span className="price text-danger">
-                          {" "}
-                          {product.price}{" "}
+                          {product.price}
                         </span>
                       </div>
                       <p className="text-muted">
@@ -640,7 +520,6 @@ export default function Products() {
                     href="javascript: history.back()"
                     className="btn btn-light"
                   >
-                    {" "}
                     « Go back
                   </a>
                 </div>
@@ -667,16 +546,11 @@ export default function Products() {
                   </ul>
                 </nav>
               </footer>
-              {/* ========= content items .// ========= */}
-            </main>{" "}
-            {/* col .// */}
-          </div>{" "}
-          {/* row .// */}
-        </div>{" "}
-        {/* container .//  */}
+            </main>
+          </div>
+        </div>
       </section>
       <div className="main-products">
-        <ToastContainer />
         <div className="filters">
           <TopPanel onSelectedChange={handleSortByChange} sortBy={sortBy} />
           <Input products={filteredProducts} onChangeCallback={filterItems} />
@@ -685,18 +559,6 @@ export default function Products() {
 
         <div className="shop-header">
           <h1 className="shop-title">Shop</h1>
-          {!showModal && (
-            <button className="cart-button" onClick={toggle}>
-              Cart ({cartItems.length})
-            </button>
-          )}
-          {editedProduct && (
-            <EditProduct
-              product={editedProduct}
-              onSave={updateProduct}
-              onCancel={closeEditModal}
-            />
-          )}
         </div>
         <div className="products-box">
           {filteredProducts.map((product) => (
@@ -712,23 +574,15 @@ export default function Products() {
 
               <div className="product-button">
                 {!cartItems.find((item) => item.id === product.id) ? (
-                  <>
-                    <button
-                      className="add-to-cart"
-                      onClick={() => {
-                        addToCart(product);
-                        notifyAddedToCart(product);
-                      }}
-                    >
-                      Add to cart
-                    </button>
-                    <button
-                      className="edit-product"
-                      onClick={() => openEditModal(product)}
-                    >
-                      Edit
-                    </button>
-                  </>
+                  <button
+                    className="add-to-cart"
+                    onClick={() => {
+                      addToCart(product);
+                      notifyAddedToCart(product);
+                    }}
+                  >
+                    Add to cart
+                  </button>
                 ) : (
                   <div className=".cart-quantity ">
                     <button
@@ -768,8 +622,6 @@ export default function Products() {
             </div>
           ))}
         </div>
-
-        <Cart showModal={showModal} toggle={toggle} />
       </div>
     </>
   );

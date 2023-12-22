@@ -13,6 +13,7 @@ import Footer from "./components/footer/Footer";
 import Navigation from "./pages/Navigation";
 import Home from "./pages/home/Home";
 import NewProducts from "./pages/home/NewProducts";
+import Cart from "./components/Cart";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/main-register" element={<MainRegister />} />
         <Route path="/nav" element={<Navigation />} />
         <Route path="/new" element={<NewProducts />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </>

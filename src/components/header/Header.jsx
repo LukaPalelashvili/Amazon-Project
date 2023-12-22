@@ -6,13 +6,66 @@ import "./header.css";
 import AuthContext from "../../context/AuthContext";
 import logo from "../../images/logo.svg";
 import CategoryList from "../categoriesList/CategoriesList";
-import Input from "../searchInput/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import SearchProduct from "../searchProduct/SearchProduct";
+import { CartContext } from "../../context/cart";
+import Cart from "../Cart";
+import { ToastContainer, toast } from "react-toastify";
+
+import { useState } from "react";
 
 const Header = () => {
   const { isLoggedIn, auth, logout } = useContext(AuthContext);
-  // const [selectedCategory, setSelectedCategory] = useState("");
+  const [showModal, setshowModal] = useState(false);
+  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const toggle = () => {
+    setshowModal(!showModal);
+  };
+
+  const notifyAddedToCart = (item) =>
+    toast.success(`${item.name} added to cart!`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+      style: {
+        backgroundColor: "#fff",
+        color: "#000",
+      },
+    });
+
+  const notifyRemovedFromCart = (item) =>
+    toast.error(`${item.name} removed from cart!`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+      style: {
+        backgroundColor: "#000",
+        color: "#fff",
+      },
+    });
+
+  const handleRemoveFromCart = (product) => {
+    removeFromCart(product);
+    notifyRemovedFromCart(product);
+  };
+
+  const openEditModal = (product) => {
+    setEditedProduct(product);
+    setshowModal(true);
+  };
+
+  // Function to close the edit modal
+  const closeEditModal = () => {
+    setEditedProduct(null);
+    setshowModal(false);
+  };
 
   return (
     <>
@@ -159,13 +212,22 @@ const Header = () => {
                     </span>
                   </a>
 
-                  <Link
+                  {/* <Link
                     data-bs-toggle="offcanvas"
-                    href="#offcanvas_cart"
                     className="btn btn-light"
-                    to={"/main-cart"}
+                    // to={"/main-cart"}
                   >
                     <i className="fa fa-shopping-cart me-1" /> My cart
+                  </Link> */}
+
+                  <Link
+                    to={"/cart"}
+                    data-bs-toggle="offcanvas"
+                    className="cart-button btn btn-light"
+                    // onClick={toggle}
+                  >
+                    <i className="fa fa-shopping-cart me-1" /> Cart (
+                    {cartItems.length})
                   </Link>
 
                   <button
@@ -421,6 +483,7 @@ const Header = () => {
           </div>{" "}
           {/* container .// */}
         </nav>
+        {/* <Cart showModal={showModal} toggle={toggle} /> */}
       </header>
     </>
   );
