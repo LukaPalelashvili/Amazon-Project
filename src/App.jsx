@@ -12,6 +12,7 @@ import Navigation from "./pages/Navigation";
 import Home from "./pages/home/Home";
 import NewProducts from "./pages/home/NewProducts";
 import Cart from "./components/Cart";
+import Information from "./pages/information/Information";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/nav" element={<Navigation />} />
         <Route path="/new" element={<NewProducts />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/info" element={<Information />} />
       </Routes>
       <Footer />
     </>

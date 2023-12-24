@@ -8,7 +8,7 @@ const Offers = () => {
   const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
   const url =
-    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/offer/offers";
+    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/offers";
   const fetchOffers = () => {
     return fetch(url)
       .then((res) => res.json())
@@ -63,7 +63,7 @@ const Offers = () => {
                       >
                         <a href="#" className="img-wrap p-2">
                           {" "}
-                          <img className="offers-img" src={offer.images[0]} />
+                          <img className="offers-img" src={offer.image} />
                         </a>
                         <div className="p-3 text-center">
                           <a href="#" className="title">

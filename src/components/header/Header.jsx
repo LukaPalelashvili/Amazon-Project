@@ -51,6 +51,7 @@ const Header = () => {
       },
     });
 
+  const hello = "hello";
   const handleRemoveFromCart = (product) => {
     removeFromCart(product);
     notifyRemovedFromCart(product);
@@ -196,7 +197,7 @@ const Header = () => {
                   {isLoggedIn ? (
                     <>
                       <p className="px-4 py-2 bg-gray-800 text-white text-xs">
-                        Welcome, {auth.UserName}!
+                        Welcome, {hello}!
                       </p>
                       <button onClick={logout}>Log out</button>
                     </>
@@ -208,7 +209,7 @@ const Header = () => {
                     <i className="fa fa-heart" />
                     <span className="ms-1 d-none d-sm-inline-block">
                       {" "}
-                      Wishlist
+                      Wishlist Welcome, {auth.name}!
                     </span>
                   </a>
 
@@ -472,10 +473,9 @@ const Header = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    {" "}
-                    Projects{" "}
-                  </a>
+                  <Link className="nav-link" to={"/info"}>
+                    Information
+                  </Link>
                 </li>
               </ul>
             </div>{" "}

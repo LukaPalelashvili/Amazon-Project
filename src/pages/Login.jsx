@@ -10,27 +10,6 @@ const Login = () => {
 
   return (
     <>
-      {/* <div>
-        <input
-          type="email"
-          value={data.email}
-          onChange={(e) => setData({ ...data, email: e.target.value })}
-        />
-        <input
-          type="password"
-          value={data.password}
-          onChange={(e) => setData({ ...data, password: e.target.value })}
-        />
-        <button
-          onClick={() => {
-            login(data);
-            console.log("You are in", data);
-          }}
-        >
-          Log in
-        </button>
-        <Link to={"/register"}>რეგისტრაცია</Link>
-      </div> */}
       <section className="padding-y bg-light" style={{ minHeight: "90vh" }}>
         <div className="container">
           <div className="card shadow mx-auto" style={{ maxWidth: 400 }}>
@@ -38,7 +17,7 @@ const Login = () => {
               <h4 className="card-title mb-4">Sign in</h4>
 
               <div className="mb-3">
-                <label className="form-label">Email</label>
+                <label className="form-label">email</label>
                 <input
                   className="form-control"
                   placeholder="Type email"

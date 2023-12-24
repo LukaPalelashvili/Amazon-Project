@@ -10,14 +10,14 @@ const AuthContextProvider = ({ children }) => {
   const login = (data) => {
     api({
       method: "post",
-      url: "https://ngglobalwebapi20231210182820.azurewebsites.net/api/User/LogIn",
+      url: "https://api.escuelajs.co/api/v1/auth/login",
       data: data,
     })
       .then((res) => {
         setAuth({ ...auth, ...res.data });
         setIsLoggedIn(true);
         console.log("res", res);
-        console.log(res.userName);
+        console.log(res.email);
       })
       .catch((err) => {
         console.error(err);

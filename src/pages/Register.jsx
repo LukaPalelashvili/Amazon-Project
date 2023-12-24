@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    userName: "",
+    name: "",
     email: "",
     password: "",
-    // avatar: "https://picsum.photos/800",
+    avatar: "",
   });
 
   const handleChange = (fieldName) => {
@@ -22,13 +22,14 @@ const Register = () => {
   const handleRegister = () => {
     api({
       method: "post",
-      url: "https://ngglobalwebapi20231210182820.azurewebsites.net/api/user/registerUser",
+      url: "https://api.escuelajs.co/api/v1/users/",
       data: formData,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userName: "",
+        user: "",
         email: "",
         password: "",
+        avatar: "",
         /* other user data */
       }),
     })
@@ -42,27 +43,6 @@ const Register = () => {
 
   return (
     <>
-      {/* <div>
-        <input
-          type="text"
-          placeholder="text"
-          value={formData.userName}
-          onChange={handleChange("userName")}
-        />
-        <input
-          type="text"
-          placeholder="email"
-          value={formData.email}
-          onChange={handleChange("email")}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={formData.password}
-          onChange={handleChange("password")}
-        />
-        <button onClick={handleRegister}>register</button>
-      </div> */}
       <section className="padding-y bg-light" style={{ minHeight: "90vh" }}>
         <div className="container">
           <div className="card shadow mx-auto" style={{ maxWidth: 400 }}>
@@ -74,8 +54,8 @@ const Register = () => {
                   <input
                     type="text"
                     placeholder="text"
-                    value={formData.userName}
-                    onChange={handleChange("userName")}
+                    value={formData.name}
+                    onChange={handleChange("name")}
                     className="form-control"
                   />
                 </div>
@@ -126,10 +106,12 @@ const Register = () => {
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">Repeat password</label>
+                <label className="form-label">Avatar</label>
                 <input
                   className="form-control"
                   placeholder=""
+                  value={formData.avatar}
+                  onChange={handleChange("avatar")}
                   // type="password"
                 />
               </div>

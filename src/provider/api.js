@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:
-    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/User/LogIn",
+  baseURL: "https://api.escuelajs.co/api/v1/auth/login",
 });
 
 api.interceptors.request.use((config) => {

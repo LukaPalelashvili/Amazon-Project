@@ -33,7 +33,10 @@ const NewProducts = () => {
             {products.map((product) => (
               <div className="col" key={product.id}>
                 <figure className="card card-product-grid">
-                  <Link to={`/product/${product.id}`} className="img-wrap">
+                  <Link
+                    to={`/product-detail/${product.id}`}
+                    className="img-wrap"
+                  >
                     <img
                       className="new-product-img"
                       src={product.images[0]}
