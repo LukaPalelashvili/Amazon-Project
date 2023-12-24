@@ -5,6 +5,7 @@ import TopPanel from "./topPanel/TopPanel.jsx";
 import Input from "./searchInput/Input.jsx";
 import CategoryList from "./categoriesList/CategoriesList.jsx";
 import AddProduct from "./addProduct/AddProduct.jsx";
+import { Link } from "react-router-dom";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -221,13 +222,10 @@ export default function Products() {
                             type="number"
                           />
                         </div>
-                        {/* col end.// */}
                       </div>
-                      {/* row end.// */}
                       <button className="btn btn-light w-100" type="button">
                         Apply
                       </button>
-                      {/* content .// */}
                     </div>
                   </div>
                 </article>
@@ -423,95 +421,107 @@ export default function Products() {
                 </div>
               </header>
               {filteredProducts.map((product) => (
-                <article className="card-product-list border-bottom pb-3 mb-3">
-                  <div className="row">
-                    <aside className="col-xl-3 col-md-4">
-                      <a href="#" className="img-wrap bg-light rounded">
-                        <img
-                          className="product-img mix-blend-multiply"
-                          src={product.images[0]}
-                        />
-                      </a>
-                    </aside>
-                    <div className="col-xl-9 col-md-8">
-                      {!cartItems.find((item) => item.id === product.id) ? (
-                        <button
-                          className="add-to-cart"
-                          onClick={() => {
-                            addToCart(product);
-                            notifyAddedToCart(product);
-                          }}
-                        >
-                          Add to cart
-                        </button>
-                      ) : (
-                        <div className=".cart-quantity ">
+                <Link
+                  className="product-link"
+                  key={product.id}
+                  to={`/product-detail/${product.id}`}
+                >
+                  <article className="card-product-list border-bottom pb-3 mb-3">
+                    <div className="row">
+                      <aside className="col-xl-3 col-md-4">
+                        <a href="#" className="img-wrap bg-light rounded">
+                          <img
+                            className="product-img mix-blend-multiply"
+                            src={product.images[0]}
+                          />
+                        </a>
+                      </aside>
+                      <div className="col-xl-9 col-md-8">
+                        {!cartItems.find((item) => item.id === product.id) ? (
                           <button
-                            className="cart-button"
+                            className="add-to-cart"
                             onClick={() => {
                               addToCart(product);
+                              notifyAddedToCart(product);
                             }}
                           >
-                            +
+                            Add to cart
                           </button>
+                        ) : (
+                          <div className=".cart-quantity ">
+                            <button
+                              className="cart-button"
+                              onClick={() => {
+                                addToCart(product);
+                              }}
+                            >
+                              +
+                            </button>
 
-                          <p style={{ color: "#4B5563" }}>
-                            {
-                              cartItems.find((item) => item.id === product.id)
-                                .quantity
-                            }
-                          </p>
-
-                          <button
-                            className="cart-button"
-                            onClick={() => {
-                              const cartItem = cartItems.find(
-                                (item) => item.id === product.id
-                              );
-                              if (cartItem.quantity === 1) {
-                                handleRemoveFromCart(product);
-                              } else {
-                                removeFromCart(product);
+                            <p style={{ color: "#4B5563" }}>
+                              {
+                                cartItems.find((item) => item.id === product.id)
+                                  .quantity
                               }
-                            }}
-                          >
-                            -
-                          </button>
+                            </p>
+
+                            <button
+                              className="cart-button"
+                              onClick={() => {
+                                const cartItem = cartItems.find(
+                                  (item) => item.id === product.id
+                                );
+                                if (cartItem.quantity === 1) {
+                                  handleRemoveFromCart(product);
+                                } else {
+                                  removeFromCart(product);
+                                }
+                              }}
+                            >
+                              -
+                            </button>
+                          </div>
+                        )}
+                        <a href="#" className="text-dark">
+                          {product.name.substring(1, 100)}
+                        </a>
+                        <div className="rating-wrap mb-2">
+                          <ul className="rating-stars">
+                            <li
+                              className="stars-active"
+                              style={{ width: "90%" }}
+                            >
+                              <img src="images/misc/stars-active.svg" alt="" />
+                            </li>
+                            <li>
+                              <img
+                                src="images/misc/starts-disable.svg"
+                                alt=""
+                              />
+                            </li>
+                          </ul>
+                          <span className="label-rating text-warning">4.5</span>
+                          <i className="dot" />
+                          <span className="label-rating text-muted">
+                            61 orders
+                          </span>
+                          <i className="dot" />
+                          <span className="label-rating text-success">
+                            Free shipping
+                          </span>
                         </div>
-                      )}
-                      <a href="#" className="text-dark">
-                        {product.name}
-                      </a>
-                      <div className="rating-wrap mb-2">
-                        <ul className="rating-stars">
-                          <li className="stars-active" style={{ width: "90%" }}>
-                            <img src="images/misc/stars-active.svg" alt="" />
-                          </li>
-                          <li>
-                            <img src="images/misc/starts-disable.svg" alt="" />
-                          </li>
-                        </ul>
-                        <span className="label-rating text-warning">4.5</span>
-                        <i className="dot" />
-                        <span className="label-rating text-muted">
-                          61 orders
-                        </span>
-                        <i className="dot" />
-                        <span className="label-rating text-success">
-                          Free shipping
-                        </span>
+                        <div className="mb-3 h5">
+                          <span className="price text-danger">
+                            {product.price}
+                          </span>
+                        </div>
+                        <p className="text-muted">
+                          {product.description.slice(0, 40)}
+                        </p>
                       </div>
-                      <div className="mb-3 h5">
-                        <span className="price text-danger">
-                          {product.price}
-                        </span>
-                      </div>
-                      <p className="text-muted">
-                        {product.description.slice(0, 40)}
-                      </p>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               ))}
 
               <footer className="d-flex mt-4">

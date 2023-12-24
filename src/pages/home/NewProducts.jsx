@@ -1,15 +1,15 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import "./home.css";
-// import Products from "../../components/Products";
+import React, { useState, useEffect, useContext } from "react";
+import { CartContext } from "../../context/cart";
+import { Link } from "react-router-dom";
 
 const NewProducts = () => {
   const [products, setProducts] = useState([]);
+  const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
   const url =
     "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/latestproducts";
-  const fetchProductss = () => {
+
+  const fetchProducts = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
@@ -18,17 +18,8 @@ const NewProducts = () => {
       });
   };
 
-  // const fetchProducts = () => {
-  //   return fetch(url)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       console.log("user", res);
-  //       setProducts(res.products);
-  //     });
-  // };
-
   useEffect(() => {
-    fetchProductss();
+    fetchProducts();
   }, []);
 
   return (
@@ -39,29 +30,37 @@ const NewProducts = () => {
             <h3>New products</h3>
           </header>
           <div className="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2">
-            {/* col end.// */}
             {products.map((product) => (
-              <div className="col">
+              <div className="col" key={product.id}>
                 <figure className="card card-product-grid">
-                  <a href="#" className="img-wrap">
-                    <img className="new-product-img" src={product.images[0]} />
-                  </a>
+                  <Link to={`/product/${product.id}`} className="img-wrap">
+                    <img
+                      className="new-product-img"
+                      src={product.images[0]}
+                      alt={product.name}
+                    />
+                  </Link>
                   <figcaption className="p-3">
                     <div className="price-wrap">
                       <span className="price">${product.price}</span>
-                    </div>{" "}
-                    {/* price-wrap.// */}
-                    <a href="#" className="title">
-                      {product.name}
-                    </a>
+                    </div>
+                    <a className="title">{product.name.substring(1, 60)}</a>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        addToCart(product);
+                        notifyAddedToCart(product);
+                      }}
+                    >
+                      <i className="me-1 fa fa-shopping-basket" />
+                      Add to cart
+                    </button>
                   </figcaption>
                 </figure>
               </div>
             ))}
-          </div>{" "}
-          {/* row end.// */}
-        </div>{" "}
-        {/* container end.// */}
+          </div>
+        </div>
       </section>
     </>
   );

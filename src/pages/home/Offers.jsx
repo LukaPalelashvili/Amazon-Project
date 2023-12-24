@@ -1,12 +1,14 @@
 import React from "react";
 import "./home.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CartContext } from "../../context/cart";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
+  const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
   const url =
-    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/offers";
+    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/offer/offers";
   const fetchOffers = () => {
     return fetch(url)
       .then((res) => res.json())
@@ -55,19 +57,32 @@ const Offers = () => {
                 <div className="row gx-0 bordered-cols">
                   {offers.map((offer) => (
                     <div className="col-md col-sm-4 col-6">
-                      <figure className="card-product product-sm p-2">
+                      <figure
+                        key={offer.id}
+                        className="card-product product-sm p-2"
+                      >
                         <a href="#" className="img-wrap p-2">
                           {" "}
-                          <img className="offers-img" src={offer.image} />{" "}
+                          <img className="offers-img" src={offer.images[0]} />
                         </a>
                         <div className="p-3 text-center">
                           <a href="#" className="title">
-                            {offer.name}
+                            {offer.name.substring(1, 60)}
                           </a>
                           <span className="badge bg-danger rounded-pill">
-                            ${offer.newPrice}
+                            ${offer.price}
                           </span>
                         </div>
+                        <button
+                          className="btn  btn-primary"
+                          onClick={() => {
+                            addToCart(offer);
+                            notifyAddedToCart(offer);
+                          }}
+                        >
+                          <i className="me-1 fa fa-shopping-basket" />
+                          Add to cart
+                        </button>
                       </figure>
                     </div>
                   ))}

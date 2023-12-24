@@ -37,96 +37,14 @@ const DemandProducts = () => {
                   </a>
                   <figcaption className="mt-2">
                     <p className="mb-2 fw-bold price"> ${demand.price} </p>{" "}
-                    {/* price.// */}
                     <a href="#" className="title">
-                      {demand.name}
+                      {demand.name.substring(1, 60)}
                     </a>
                   </figcaption>
-                </figure>{" "}
-                {/* item // */}
+                </figure>
               </div>
             ))}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/2.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $578.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Samsung Galaxy Tab S7 WiFi Tablet Snapdragon{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/3.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $32.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Sample product name goes here as demo{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/4.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $935.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Apple iPhone 8 64GB 128GB 256GB ATT T-Mobile{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/5.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $67.50 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Wired Gaming Headset Headphone with Microphone{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
+
             <div className="col mb-4">
               <article className="card p-3 p-lg-5 bg-primary h-100">
                 <div>
@@ -136,91 +54,9 @@ const DemandProducts = () => {
                   </p>
                 </div>
               </article>
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/6.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $456.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Canon EOS Rebel with 100x zoom 18-55mm lense{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/7.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $280.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    HP Laptop Computer 15.6" 512GB SSD Win11 Intel{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/8.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $32.00 </p>{" "}
-                  {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Sample product name goes here as demo{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-            <div className="col">
-              <figure className="card-product-grid">
-                <a href="#" className="img-wrap rounded bg-light">
-                  <img
-                    src="images/items/tech/9.jpg"
-                    className="mix-blend-multiply"
-                  />
-                </a>
-                <figcaption className="mt-2">
-                  <p className="mb-2 fw-bold price"> $8.95 </p> {/* price.// */}
-                  <a href="#" className="title">
-                    {" "}
-                    Sample product name goes here as demo{" "}
-                  </a>
-                </figcaption>
-              </figure>{" "}
-              {/* item // */}
-            </div>{" "}
-            {/* col // */}
-          </div>{" "}
-          {/* row // */}
-        </div>{" "}
-        {/* container .//  */}
+            </div>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -1,6 +1,33 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { CartContext } from "../../context/cart";
 
-const ProductsDetail = () => {
+const ProductsDetail = (products) => {
+  const { productId } = useParams();
+  const [product, setProduct] = useState(null);
+  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/products/${productId}`
+        );
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+
+    fetchData();
+  }, [productId]);
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
   return (
     <>
       <section className="padding-y">
@@ -13,45 +40,42 @@ const ProductsDetail = () => {
                   className="img-main-wrap mb-3 img-thumbnail"
                   style={{ height: 520 }}
                 >
-                  <img
-                    src="images/items/detail-tech/big1.jpg"
-                    className="h-100 img-cover"
-                  />
+                  <img className="h-100 img-cover" src={product.images[0]} />
                 </a>
                 <div className="thumbs-wrap text-center overflow-auto text-nowrap">
                   <a href="#" className="item-thumb">
                     <img
                       className="img-thumbnail size-60x60"
                       height={60}
-                      src="images/items/detail-tech/big1.jpg"
+                      src={product.images[0]}
+                    />
+                  </a>
+                  <a href="#" className="item-thumb">
+                    <img
+                      className="img-thumbnail size-60x60"
+                      height={60}
+                      src={product.images[1]}
+                    />
+                  </a>
+                  <a href="#" className="item-thumb">
+                    <img
+                      className="img-thumbnail size-60x60"
+                      height={60}
+                      src={product.images[2]}
                     />{" "}
                   </a>
                   <a href="#" className="item-thumb">
                     <img
                       className="img-thumbnail size-60x60"
                       height={60}
-                      src="images/items/detail-tech/big2.jpg"
-                    />{" "}
+                      src={product.images[3]}
+                    />
                   </a>
                   <a href="#" className="item-thumb">
                     <img
                       className="img-thumbnail size-60x60"
                       height={60}
-                      src="images/items/detail-tech/big3.jpg"
-                    />{" "}
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src="images/items/detail-tech/big1.jpg"
-                    />{" "}
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src="images/items/detail-tech/big2.jpg"
+                      src={product.images[4]}
                     />{" "}
                   </a>
                 </div>{" "}
@@ -61,10 +85,7 @@ const ProductsDetail = () => {
             </aside>
             <main className="col-lg-6">
               <article className="ps-lg-3">
-                <h4 className="title text-dark">
-                  Smart Watch for Men Women, 2022 Fitness Tracker 1.69" Touch
-                  Screen and Waterproof, Android OS{" "}
-                </h4>
+                <h4 className="title text-dark">{product.name}</h4>
                 <div className="rating-wrap my-3">
                   <ul className="rating-stars">
                     <li style={{ width: "80%" }} className="stars-active">
@@ -85,17 +106,11 @@ const ProductsDetail = () => {
                   <i className="dot" />
                   <span className="label-rating text-success">In stock</span>
                 </div>{" "}
-                {/* rating-wrap.// */}
                 <div className="mb-2">
                   <var className="price h5">$75.00</var>
                   <span className="text-muted">/per box</span>
                 </div>
-                <p>
-                  Modern look and quality demo item Smartwatch Fitness Watch 25
-                  Sports IP68 is a streetwear-inspired collection that continues
-                  to break away from the conventions of mainstream fashion. Made
-                  in Italy, these black and brown for men.
-                </p>
+                <p>{product.description.substring(1, 300)}</p>
                 <dl className="row">
                   <dt className="col-3 fw-normal text-muted">Type:</dt>
                   <dd className="col-9">Regular</dd>
@@ -116,7 +131,6 @@ const ProductsDetail = () => {
                       <option>Large</option>
                     </select>
                   </div>{" "}
-                  {/* col.// */}
                   <div className="col-md-4 col-6 mb-2">
                     <label className="form-label d-block">Quantity</label>
                     <div className="input-group input-spinner">
@@ -148,31 +162,29 @@ const ProductsDetail = () => {
                         </svg>
                       </button>
                     </div>{" "}
-                    {/* input-group.// */}
-                  </div>{" "}
-                  {/* col.// */}
-                </div>{" "}
-                {/* row.// */}
+                  </div>
+                </div>
                 <a href="#" className="btn  btn-warning">
                   {" "}
                   Buy now{" "}
                 </a>
-                <a href="#" className="btn  btn-primary">
-                  {" "}
-                  <i className="me-1 fa fa-shopping-basket" /> Add to cart{" "}
-                </a>
+                <button
+                  className="btn  btn-primary"
+                  onClick={() => {
+                    addToCart(product);
+                    notifyAddedToCart(product);
+                  }}
+                >
+                  <i className="me-1 fa fa-shopping-basket" />
+                  Add to cart
+                </button>
                 <a href="#" className="btn  btn-light">
-                  {" "}
                   <i className="me-1 fa fa-heart" /> Save{" "}
                 </a>
-              </article>{" "}
-              {/* product-info-aside .// */}
-            </main>{" "}
-            {/* col.// */}
-          </div>{" "}
-          {/* row.// */}
-        </div>{" "}
-        {/* container .//  */}
+              </article>
+            </main>
+          </div>
+        </div>
       </section>
     </>
   );
