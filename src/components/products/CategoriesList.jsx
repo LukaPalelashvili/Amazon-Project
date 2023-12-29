@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./category.css";
+import "./products.css";
 
 const CategoryList = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    const url =
-      "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/categories";
+    const url = "https://dummyjson.com/products/categories";
 
     fetch(url)
       .then((res) => res.json())
@@ -15,34 +14,35 @@ const CategoryList = ({ onSelectCategory }) => {
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
 
+  const showAllCategories = () => {
+    setSelectedCategory("");
+    onSelectCategory("");
+  };
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     onSelectCategory(category);
   };
-
   return (
     <article className="p-3 p-lg-4 border-bottom">
-      <a
-        href="#"
-        className="d-flex text-decoration-none justify-content-between text-dark"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapse_aside1"
-      >
-        <strong>Other category </strong>
+      <a>
+        <strong>categories </strong>
         <i className="icon-control fa fa-chevron-down" />
       </a>
       <div className="collapse show" id="collapse_aside1">
         <div className="pt-3">
+          <button className="category-button" onClick={showAllCategories}>
+            Show All Categories
+          </button>
           <ul value={selectedCategory} className="list-menu mb-0">
             {categories.map((category) => (
-              <li className="category-list">
+              <li key={category} value={category} className="category-list">
                 <button
                   className="category-button"
                   onClick={(e) => handleCategoryChange(e.target.value)}
-                  key={category.id}
-                  value={category.id}
+                  value={category}
                 >
-                  {category.name}
+                  {category}
                 </button>
               </li>
             ))}

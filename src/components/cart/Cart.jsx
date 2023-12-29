@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { CartContext } from "../context/cart.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import "./cart.css";
-import EmptyCart from "../images/empty-cart.png";
+import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../context/cart";
 
 const Cart = ({}) => {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } =
@@ -25,18 +25,18 @@ const Cart = ({}) => {
                           <div className="me-3 flex-shrink-0">
                             <img
                               src={item.images[0]}
-                              alt={item.name}
+                              alt={item.title}
                               className="cart-img"
                             />
                           </div>
                           <figcaption className="info">
                             <a className="title" href="/p-market-detail">
-                              {item.name}
+                              {item.title}
                             </a>
                             <p className="text-muted">
-                              Size: medium, Color: blue, Material: Plastic{" "}
+                              {item.title}
                               <br />
-                              Seller: Artel Market
+                              {item.name}
                             </p>
                             <button
                               className="btn btn-light text-danger btn-sm"

@@ -6,15 +6,14 @@ const NewProducts = () => {
   const [products, setProducts] = useState([]);
   const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
-  const url =
-    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/latestproducts";
+  const url = "https://dummyjson.com/products?limit=10";
 
   const fetchProducts = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
-        console.log("pr", products);
-        setProducts(products);
+        console.log("pr", products.products);
+        setProducts(products.products);
       });
   };
 
@@ -40,14 +39,14 @@ const NewProducts = () => {
                     <img
                       className="new-product-img"
                       src={product.images[0]}
-                      alt={product.name}
+                      alt={product.title}
                     />
                   </Link>
                   <figcaption className="p-3">
                     <div className="price-wrap">
                       <span className="price">${product.price}</span>
                     </div>
-                    <a className="title">{product.name.substring(1, 60)}</a>
+                    <a className="title">{product.title.substring(0, 60)}</a>
                     <button
                       className="btn btn-primary"
                       onClick={() => {

@@ -2,19 +2,18 @@ import React from "react";
 import "./home.css";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/cart";
+import { Link } from "react-router-dom";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
   const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
-  const url =
-    "https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/offers";
+  const url = "https://dummyjson.com/products?limit=5";
   const fetchOffers = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((offers) => {
-        console.log("of", offers);
-        setOffers(offers);
+        setOffers(offers.products);
       });
   };
 
@@ -29,30 +28,15 @@ const Offers = () => {
           <div className="card overflow-hidden">
             <div className="row gx-0">
               <aside className="col-lg-3 p-4">
-                <header>
-                  <h3>Deals and offers</h3>
-                  <p>Hygiene equipments</p>
-                </header>
-                {/* sect-heading */}
-                <div className="timer">
+                <article className="card p-3  bg-primary h-100">
                   <div>
-                    {" "}
-                    <span className="num">04</span> <small>Days</small>
+                    <h4 className="text-white mb-3">Today's Best Offers</h4>
+                    <p className="text-white-50">
+                      Get up to 70% off bedding and bath.
+                    </p>
                   </div>
-                  <div>
-                    {" "}
-                    <span className="num">12</span> <small>Hours</small>
-                  </div>
-                  <div>
-                    {" "}
-                    <span className="num">58</span> <small>Min</small>
-                  </div>
-                  <div>
-                    {" "}
-                    <span className="num">02</span> <small>Sec</small>
-                  </div>
-                </div>
-              </aside>{" "}
+                </article>
+              </aside>
               <div className="col-lg-9 border-start">
                 <div className="row gx-0 bordered-cols">
                   {offers.map((offer) => (
@@ -61,28 +45,27 @@ const Offers = () => {
                         key={offer.id}
                         className="card-product product-sm p-2"
                       >
-                        <a href="#" className="img-wrap p-2">
-                          {" "}
-                          <img className="offers-img" src={offer.image} />
-                        </a>
+                        <Link
+                          to={`/product-detail/${offer.id}`}
+                          className="img-wrap p-2"
+                        >
+                          <img className="offers-img" src={offer.images[0]} />
+                        </Link>
                         <div className="p-3 text-center">
                           <a href="#" className="title">
-                            {offer.name.substring(1, 60)}
+                            {offer.title.substring(0, 10)}
                           </a>
-                          <span className="badge bg-danger rounded-pill">
-                            ${offer.price}
-                          </span>
                         </div>
-                        <button
-                          className="btn  btn-primary"
-                          onClick={() => {
-                            addToCart(offer);
-                            notifyAddedToCart(offer);
-                          }}
-                        >
-                          <i className="me-1 fa fa-shopping-basket" />
-                          Add to cart
-                        </button>
+                        <div className="justify-content-center">
+                          <div className=" text-center">
+                            <span className="badge bg-danger rounded-pill">
+                              Old Price: ${offer.price}
+                            </span>
+                            <span className="badge bg-success rounded-pill">
+                              New Price: ${Math.round(offer.price * 0.9)}
+                            </span>
+                          </div>
+                        </div>
                       </figure>
                     </div>
                   ))}

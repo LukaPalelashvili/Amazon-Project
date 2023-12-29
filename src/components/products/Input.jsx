@@ -7,7 +7,6 @@ const Input = ({ onChangeCallback }) => {
     const inputValue = e.target.value;
     setValue(inputValue);
     onChangeCallback && onChangeCallback(inputValue);
-    console.log("+");
   };
 
   return (

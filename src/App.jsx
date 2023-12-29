@@ -1,17 +1,17 @@
-import Products from "./components/Products";
+import Products from "./components/products/Products";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/header/Header";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UsersList from "./pages/usersList/usersList";
-import ProductsSwitch from "./pages/productsSwitch/ProductsSwitch";
+import ProductsSwitch from "./components/products/ProductsSwitch";
 import ProductsDetail from "./pages/productsDetail/ProductsDetail";
 import UserProfile from "./pages/userProfile/UserProfile";
 import Footer from "./components/footer/Footer";
 import Navigation from "./pages/Navigation";
 import Home from "./pages/home/Home";
 import NewProducts from "./pages/home/NewProducts";
-import Cart from "./components/Cart";
+import Cart from "./components/cart/Cart";
 import Information from "./pages/information/Information";
 
 function App() {

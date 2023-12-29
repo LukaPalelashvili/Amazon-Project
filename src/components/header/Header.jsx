@@ -1,72 +1,17 @@
-// Header.jsx
-
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
 import AuthContext from "../../context/AuthContext";
 import logo from "../../images/logo.svg";
-import CategoryList from "../categoriesList/CategoriesList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CartContext } from "../../context/cart";
-import Cart from "../Cart";
-import { ToastContainer, toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 
 const Header = () => {
   const { isLoggedIn, auth, logout } = useContext(AuthContext);
-  const [showModal, setshowModal] = useState(false);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
-  const toggle = () => {
-    setshowModal(!showModal);
-  };
-
-  const notifyAddedToCart = (item) =>
-    toast.success(`${item.name} added to cart!`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-      style: {
-        backgroundColor: "#fff",
-        color: "#000",
-      },
-    });
-
-  const notifyRemovedFromCart = (item) =>
-    toast.error(`${item.name} removed from cart!`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-      style: {
-        backgroundColor: "#000",
-        color: "#fff",
-      },
-    });
-
-  const hello = "hello";
-  const handleRemoveFromCart = (product) => {
-    removeFromCart(product);
-    notifyRemovedFromCart(product);
-  };
-
-  const openEditModal = (product) => {
-    setEditedProduct(product);
-    setshowModal(true);
-  };
-
-  // Function to close the edit modal
-  const closeEditModal = () => {
-    setEditedProduct(null);
-    setshowModal(false);
-  };
 
   return (
     <>
@@ -89,7 +34,7 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     className="dropdown-toggle btn btn-primary text-nowrap"
                   >
-                    <i className="fa me-1 fa-bars" /> Categories
+                    Categories
                   </button>
                   <nav className="dropdown-menu dropdown-large">
                     <ul className="row row-cols-2 row-cols-lg-3 list-unstyled nav-pills g-0">
@@ -184,42 +129,41 @@ const Header = () => {
                         </a>
                       </li>
                     </ul>
-                  </nav>{" "}
-                  {/* dropdown-menu end.// */}
-                </div>{" "}
-                {/* dropdown end.// */}
-              </div>{" "}
-              {/* col end.// */}
+                  </nav>
+                </div>
+              </div>
               <div className="col-lg col-md order-lg-last">
                 <div className="float-md-end">
-                  <FontAwesomeIcon icon="fa-solid fa-user" />
-                  <span className="ms-1 d-none d-sm-inline-block"> </span>
-                  {isLoggedIn ? (
-                    <>
-                      <p className="px-4 py-2 bg-gray-800 text-white text-xs">
-                        Welcome, {hello}!
-                      </p>
-                      <button onClick={logout}>Log out</button>
-                    </>
-                  ) : (
-                    <Link to={"/login"}>Log in</Link>
-                  )}
-
-                  <a href="#" className="btn btn-light shadow-sm">
-                    <i className="fa fa-heart" />
+                  <div className="btn btn-light shadow-sm">
+                    <FontAwesomeIcon
+                      style={{ color: "gray" }}
+                      className="fa me-1"
+                      icon={faUser}
+                    ></FontAwesomeIcon>
+                    <span className="ms-1 d-none d-sm-inline-block"> </span>
+                    {isLoggedIn ? (
+                      <>
+                        <p className="px-4 py-2 bg-gray-800 text-white text-xs">
+                          Welcome, {hello}!
+                        </p>
+                        <button onClick={logout}>Log out</button>
+                      </>
+                    ) : (
+                      <Link className="btn-light " to={"/login"}>
+                        Log in
+                      </Link>
+                    )}
+                  </div>
+                  <div className="btn btn-light shadow-sm">
                     <span className="ms-1 d-none d-sm-inline-block">
-                      {" "}
-                      Wishlist Welcome, {auth.name}!
+                      <FontAwesomeIcon
+                        style={{ color: "gray" }}
+                        className="fa me-1"
+                        icon={faHeart}
+                      ></FontAwesomeIcon>
+                      Wishlist!
                     </span>
-                  </a>
-
-                  {/* <Link
-                    data-bs-toggle="offcanvas"
-                    className="btn btn-light"
-                    // to={"/main-cart"}
-                  >
-                    <i className="fa fa-shopping-cart me-1" /> My cart
-                  </Link> */}
+                  </div>
 
                   <Link
                     to={"/cart"}
@@ -227,8 +171,12 @@ const Header = () => {
                     className="cart-button btn btn-light"
                     // onClick={toggle}
                   >
-                    <i className="fa fa-shopping-cart me-1" /> Cart (
-                    {cartItems.length})
+                    <FontAwesomeIcon
+                      style={{ color: "gray" }}
+                      className="fa me-1"
+                      icon={faHeart}
+                    ></FontAwesomeIcon>{" "}
+                    Cart ({cartItems.length})
                   </Link>
 
                   <button
@@ -255,18 +203,12 @@ const Header = () => {
                     <button className="input-group-btn btn-icon btn btn-light">
                       <i className="fa fa-search" />
                     </button>
-                  </div>{" "}
-                  {/* input-group end.// */}
-                </form>{" "}
-                {/* search-wrap end.// */}
-              </div>{" "}
-              {/* col end.// */}
-            </div>{" "}
-            {/* row end.// */}
-          </div>{" "}
-          {/* container end.// */}
-        </section>{" "}
-        {/* header-main end.// */}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
         <nav className="navbar py-0 py-md-2 navbar-expand-md navbar-light border-bottom">
           <div className="container">
             <div className="" id="main_nav" style={{}}>
@@ -281,49 +223,42 @@ const Header = () => {
                     All templates
                   </a>
                   <nav className="dropdown-menu p-4">
-                    {/* megamenu-inner */}
                     <div className="d-flex flex-wrap flex-sm-nowrap">
                       <div style={{ width: "12rem" }}>
                         <h6>Ads website</h6>
                         <ul className="list-menu mb-3">
                           <li>
                             <a className="text-body" href="/p-ads-index">
-                              {" "}
-                              Ads home{" "}
-                            </a>{" "}
+                              Ads home
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-ads-list">
-                              {" "}
-                              Ads listing{" "}
-                            </a>{" "}
+                              Ads listing
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-ads-detail">
-                              {" "}
-                              Ads detail{" "}
-                            </a>{" "}
+                              Ads detail
+                            </a>
                           </li>
                         </ul>
                         <h6>Techstore</h6>
                         <ul className="list-menu mb-3">
                           <li>
                             <a className="text-body" href="/p-techstore-index">
-                              {" "}
-                              Main page{" "}
-                            </a>{" "}
+                              Main page
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-techstore-list">
-                              {" "}
-                              Listing view{" "}
-                            </a>{" "}
+                              Listing view
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-techstore-detail">
-                              {" "}
-                              Item details{" "}
-                            </a>{" "}
+                              Item details
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -332,39 +267,33 @@ const Header = () => {
                         <ul className="list-menu mb-3">
                           <li>
                             <a className="text-body" href="/p-market-index">
-                              {" "}
-                              Main page{" "}
-                            </a>{" "}
+                              Main page
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-market-list">
-                              {" "}
-                              Listing view{" "}
-                            </a>{" "}
+                              Listing view
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-market-list-grid">
-                              {" "}
-                              Grid view{" "}
-                            </a>{" "}
+                              Grid view
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-market-detail">
-                              {" "}
-                              Item detail{" "}
-                            </a>{" "}
+                              Item detail
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-market-cart">
-                              {" "}
-                              Cart page{" "}
-                            </a>{" "}
+                              Cart page
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-market-order">
-                              {" "}
-                              Order page{" "}
-                            </a>{" "}
+                              Order page
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -373,42 +302,36 @@ const Header = () => {
                         <ul className="list-menu mb-3">
                           <li>
                             <a className="text-body" href="/p-food-index">
-                              {" "}
-                              Main page{" "}
-                            </a>{" "}
+                              Main page
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-food-detail">
-                              {" "}
-                              Restaurant foods{" "}
-                            </a>{" "}
+                              Restaurant foods
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-food-order">
-                              {" "}
-                              Food order{" "}
-                            </a>{" "}
+                              Food order
+                            </a>
                           </li>
                         </ul>
                         <h6>Common pages</h6>
                         <ul className="list-menu mb-3">
                           <li>
                             <a className="text-body" href="/p-info-pricing">
-                              {" "}
-                              Pricing page{" "}
-                            </a>{" "}
+                              Pricing page
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-user-profile">
-                              {" "}
-                              User profile{" "}
-                            </a>{" "}
+                              User profile
+                            </a>
                           </li>
                           <li>
                             <a className="text-body" href="/p-user-signup">
-                              {" "}
-                              User register{" "}
-                            </a>{" "}
+                              User register
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -418,9 +341,7 @@ const Header = () => {
                         Download all templates
                       </a>
                     </figure>
-                    {/* megamenu-inner .// */}
-                  </nav>{" "}
-                  {/* dropdown-menu .// */}
+                  </nav>
                 </li>
                 <li className="nav-item dropdown">
                   <a
@@ -433,32 +354,25 @@ const Header = () => {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      {" "}
                       <a className="dropdown-item" href="/p-techstore-index">
-                        {" "}
-                        Page home{" "}
-                      </a>{" "}
+                        Page home
+                      </a>
                     </li>
                     <li>
-                      {" "}
                       <a className="dropdown-item" href="/p-techstore-list">
-                        {" "}
-                        Page listing{" "}
-                      </a>{" "}
+                        Page listing
+                      </a>
                     </li>
                     <li>
-                      {" "}
                       <a className="dropdown-item" href="/p-techstore-detail">
-                        {" "}
-                        Page detail{" "}
-                      </a>{" "}
+                        Page detail
+                      </a>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">
-                    {" "}
-                    Services{" "}
+                    Services
                   </a>
                 </li>
                 <li className="nav-item">
@@ -468,8 +382,7 @@ const Header = () => {
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">
-                    {" "}
-                    Services{" "}
+                    Services
                   </a>
                 </li>
                 <li className="nav-item">
@@ -478,12 +391,9 @@ const Header = () => {
                   </Link>
                 </li>
               </ul>
-            </div>{" "}
-            {/* collapse .// */}
-          </div>{" "}
-          {/* container .// */}
+            </div>
+          </div>
         </nav>
-        {/* <Cart showModal={showModal} toggle={toggle} /> */}
       </header>
     </>
   );
