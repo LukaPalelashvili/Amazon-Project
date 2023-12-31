@@ -1,17 +1,71 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
 import AuthContext from "../../context/AuthContext";
 import logo from "../../images/logo.svg";
 import { CartContext } from "../../context/cart";
+import { SaveContext } from "../../context/saveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark,
+  faUser,
+  faSearch,
+  faCartShopping,
+} from "@fortawesome/free-solid-svg-icons";
 
-import { useState } from "react";
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
   const { isLoggedIn, auth, logout } = useContext(AuthContext);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const { saveItems, addToSave, removeFromSave } = useContext(SaveContext);
+  const [searchProduct, setSearchProduct] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(searchProduct);
+  const [value, setValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const url = "https://dummyjson.com/products?limit=6";
+  const fetchSearchProduct = () => {
+    return fetch(url)
+      .then((res) => res.json())
+      .then((searchProduct) => {
+        setSearchProduct(searchProduct.products);
+      });
+  };
+
+  useEffect(() => {
+    fetchSearchProduct();
+  }, []);
+
+  const handleChange1 = (inputValue) => {
+    setValue(inputValue);
+  };
+
+  const filterItems = (searchTerm) => {
+    if (searchTerm.trim() === "") {
+      setFilteredProducts([]);
+    } else {
+      setFilteredProducts((prevProducts) =>
+        searchProduct.filter((product) =>
+          product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  };
+
+  const handleInputClick = () => {
+    setShowDropdown(true);
+  };
+
+  const handleInputBlur = () => {
+    setTimeout(() => {
+      setShowDropdown(false);
+    }, 200);
+  };
+
+  const handleItemClick = () => {
+    setShowDropdown(false);
+  };
 
   return (
     <>
@@ -36,100 +90,6 @@ const Header = () => {
                   >
                     Categories
                   </button>
-                  <nav className="dropdown-menu dropdown-large">
-                    <ul className="row row-cols-2 row-cols-lg-3 list-unstyled nav-pills g-0">
-                      <li>
-                        <a className="nav-link" href="#">
-                          Laptops
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Cameras
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Gadgets
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Accessories
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Smartphones
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Smartwatches
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Headsets
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Gamings
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Apple
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Lacetti
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Toyota
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Hyundai
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Mercedes
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Chevrolet
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Lacetti
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Hyundai
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Office tech
-                        </a>
-                      </li>
-                      <li>
-                        <a className="nav-link" href="#">
-                          Home equipments
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
                 </div>
               </div>
               <div className="col-lg col-md order-lg-last">
@@ -154,16 +114,16 @@ const Header = () => {
                       </Link>
                     )}
                   </div>
-                  <div className="btn btn-light shadow-sm">
+                  <Link to={"/saved"} className="btn btn-light shadow-sm">
                     <span className="ms-1 d-none d-sm-inline-block">
                       <FontAwesomeIcon
                         style={{ color: "gray" }}
                         className="fa me-1"
-                        icon={faHeart}
+                        icon={faBookmark}
                       ></FontAwesomeIcon>
-                      Wishlist!
+                      Saved ({saveItems.length})
                     </span>
-                  </div>
+                  </Link>
 
                   <Link
                     to={"/cart"}
@@ -174,7 +134,7 @@ const Header = () => {
                     <FontAwesomeIcon
                       style={{ color: "gray" }}
                       className="fa me-1"
-                      icon={faHeart}
+                      icon={faCartShopping}
                     ></FontAwesomeIcon>{" "}
                     Cart ({cartItems.length})
                   </Link>
@@ -192,19 +152,39 @@ const Header = () => {
                   </button>
                 </div>
               </div>
+
               <div className="col-lg-3 col-xl-4 col-xxl-5 col-md-12 order-lg-3">
-                <form action="#">
+                <form onSubmit={(e) => e.preventDefault()}>
                   <div className="input-group">
-                    <input
-                      type="search"
-                      className="form-control"
-                      placeholder="Search"
+                    <HeaderSearch
+                      value={value}
+                      onChangeInput={handleChange1}
+                      onChangeCallback={filterItems}
+                      onFocus={handleInputClick}
+                      onBlur={handleInputBlur}
+                      onItemClick={handleItemClick}
                     />
-                    <button className="input-group-btn btn-icon btn btn-light">
-                      <i className="fa fa-search" />
-                    </button>
                   </div>
                 </form>
+                <div
+                  className={`dropdown-menu1${showDropdown ? " show" : ""}`}
+                  style={{ display: showDropdown ? "block" : "none" }}
+                >
+                  {filteredProducts?.map((search) => (
+                    <div className="search-container" key={search.id}>
+                      <img
+                        className="search-img"
+                        src={search.images[0]}
+                        alt=""
+                      />
+                      <div className="search-info">
+                        <p>{search.title}</p>
+                        <p>{search.description.substring(0, 30)}...</p>
+                      </div>
+                      <p className="search-price">${search.price}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

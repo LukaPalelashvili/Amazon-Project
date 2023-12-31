@@ -48,3 +48,35 @@
 .logo {
   min-width: 100%;
 }
+
+.dropdown-menu1 {
+  min-height: 100px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px;
+  z-index: 1;
+  position: absolute;
+  width: 537px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  width: 450px;
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-container img {
+  height: 70px;
+  width: 70px;
+  border: 1px solid black;
+}

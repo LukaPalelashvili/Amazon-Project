@@ -1,9 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../context/cart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { SaveContext } from "../../context/saveContext";
 
 const DemandProducts = () => {
   const [demands, setDemands] = useState([]);
+  const { cartItems, addToCart, notifyAddedToCart } = useContext(CartContext);
+  const { saveItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
   const url = "https://dummyjson.com/products?limit=10";
   const fetchDemands = () => {
     return fetch(url)
@@ -51,13 +57,60 @@ const DemandProducts = () => {
                   </a>
                   <figcaption className="mt-2">
                     <p className="mb-2 fw-bold price">
-                      {demand.description.substring(0, 50)}
+                      {demand.description.substring(0, 30)}
                     </p>
                     <div style={{ color: "green" }} className="row row-cols-2">
                       <a href="" className="title">
                         {demand.brand.substring(0, 9)}
                       </a>
                       <p className="title">${demand.price} </p>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      {!cartItems.find((item) => item.id === demand.id) ? (
+                        <button
+                          className={"btn btn-light btn-icon float-end"}
+                          onClick={() => {
+                            addToCart(demand);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCartShopping}
+                          ></FontAwesomeIcon>
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className={"btn btn-light btn-icon float-end "}
+                          onClick={() => {
+                            addToCart(demand);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCartShopping}
+                          ></FontAwesomeIcon>
+                        </button>
+                      )}
+
+                      {!saveItems.find((item) => item.id === demand.id) ? (
+                        <button
+                          className={"btn btn-light btn-icon float-end"}
+                          onClick={() => {
+                            addToSave(demand);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faBookmark}></FontAwesomeIcon>
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className={"btn btn-light btn-icon float-end"}
+                          onClick={() => {
+                            addToSave(demand);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faBookmark}></FontAwesomeIcon>
+                        </button>
+                      )}
                     </div>
                   </figcaption>
                 </figure>

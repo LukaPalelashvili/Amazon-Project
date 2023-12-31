@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/cart.jsx";
+import { SaveContext } from "../../context/saveContext.jsx";
 import "./products.css";
 import TopPanel from "../topPanel/TopPanel.jsx";
 import Input from "./Input.jsx";
@@ -8,14 +9,21 @@ import AddProduct from "./AddProduct.jsx";
 import { Link } from "react-router-dom";
 import Brands from "./Brands.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faGrip } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faGrip,
+  faCartShopping,
+  faBookmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { useForceUpdate } from "../../hooks/useForceUpdate.jsx";
 import Ratings from "./Ratings.jsx";
+
 import Price from "./Price.jsx";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const { saveItems, addToSave, removeFromSave } = useContext(SaveContext);
   const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -130,7 +138,7 @@ export default function Products() {
             </div>
             <div className="btn-group mb-3 mb-md-0">
               <Input
-                products={filteredProducts}
+                // products={filteredProducts}
                 onChangeCallback={filterItems}
               />
             </div>
@@ -177,7 +185,7 @@ export default function Products() {
                             <Link to={`/product-detail/${product.id}`}>
                               <img
                                 className="product-img mix-blend-multiply"
-                                src={product.images[1]}
+                                src={product.images[0]}
                               />
                             </Link>
                           </div>
@@ -192,54 +200,69 @@ export default function Products() {
                               (item) => item.id === product.id
                             ) ? (
                               <button
-                                className={`add-to-cart ${
-                                  isGrid ? "grid-button" : ""
+                                className={`btn btn-light btn-icon float-end ${
+                                  isGrid
+                                    ? "btn btn-light btn-icon float-end"
+                                    : ""
                                 }`}
                                 onClick={() => {
                                   addToCart(product);
                                 }}
                               >
-                                Add to cart
+                                <FontAwesomeIcon
+                                  icon={faCartShopping}
+                                ></FontAwesomeIcon>
                               </button>
                             ) : (
-                              <div
-                                className={`cart-quantity ${
-                                  isGrid ? "grid-quantity" : ""
+                              <button
+                                className={`btn btn-light btn-icon float-end ${
+                                  isGrid
+                                    ? "btn btn-light btn-icon float-end"
+                                    : ""
                                 }`}
+                                onClick={() => {
+                                  addToCart(product);
+                                }}
                               >
-                                <button
-                                  className="cart-button"
-                                  onClick={() => {
-                                    addToCart(product);
-                                  }}
-                                >
-                                  +
-                                </button>
-
-                                <p style={{ color: "#4B5563" }}>
-                                  {
-                                    cartItems.find(
-                                      (item) => item.id === product.id
-                                    ).quantity
-                                  }
-                                </p>
-
-                                <button
-                                  className="cart-button"
-                                  onClick={() => {
-                                    const cartItem = cartItems.find(
-                                      (item) => item.id === product.id
-                                    );
-                                    if (cartItem.quantity === 1) {
-                                      handleRemoveFromCart(product);
-                                    } else {
-                                      removeFromCart(product);
-                                    }
-                                  }}
-                                >
-                                  -
-                                </button>
-                              </div>
+                                <FontAwesomeIcon
+                                  icon={faCartShopping}
+                                ></FontAwesomeIcon>
+                              </button>
+                            )}
+                          </div>
+                          <div>
+                            {!saveItems.find(
+                              (item) => item.id === product.id
+                            ) ? (
+                              <button
+                                className={`btn btn-light btn-icon float-end ${
+                                  isGrid
+                                    ? "btn btn-light btn-icon float-end"
+                                    : ""
+                                }`}
+                                onClick={() => {
+                                  addToSave(product);
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faBookmark}
+                                ></FontAwesomeIcon>
+                              </button>
+                            ) : (
+                              <button
+                                className={`btn btn-light btn-icon float-end ${
+                                  isGrid
+                                    ? "btn btn-light btn-icon float-end"
+                                    : ""
+                                }`}
+                                onClick={() => {
+                                  addToSave(product);
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faBookmark}
+                                ></FontAwesomeIcon>
+                              </button>
                             )}
                           </div>
                           <p href="#" className="text-dark">

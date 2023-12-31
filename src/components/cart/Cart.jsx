@@ -34,9 +34,9 @@ const Cart = ({}) => {
                               {item.title}
                             </a>
                             <p className="text-muted">
-                              {item.title}
+                              {/* {item.title} */}
                               <br />
-                              {item.name}
+                              {item.description}
                             </p>
                             <button
                               className="btn btn-light text-danger btn-sm"
@@ -46,9 +46,12 @@ const Cart = ({}) => {
                             >
                               Remove
                             </button>
-                            <a href="#" className="btn btn-light btn-sm">
-                              Save for later
-                            </a>
+                            <Link
+                              to={`/product-detail/${item.id}`}
+                              className="btn btn-light btn-sm"
+                            >
+                              Watch Product
+                            </Link>
                           </figcaption>
                         </figure>
                       </div>
@@ -65,7 +68,7 @@ const Cart = ({}) => {
                           >
                             +
                           </button>
-                          <p>{item.quantity}</p>
+                          <p>${item.price}</p>
                           <button
                             className="quantity-button"
                             onClick={() => {

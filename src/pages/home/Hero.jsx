@@ -31,14 +31,18 @@ const Hero = () => {
                 <nav className="nav flex-column nav-pills mb-3 mb-lg-0">
                   {categories.slice(0, 8).map((category) => (
                     <>
-                      <a className="nav-link" href="#">
+                      <Link
+                        key={category}
+                        className="nav-link"
+                        to={`/products/${encodeURIComponent(category)}`}
+                      >
                         {category}
-                      </a>
+                      </Link>
                     </>
                   ))}
-                  <a className="nav-link" href="#">
+                  <Link to="/products" className="nav-link" href="#">
                     Other products
-                  </a>
+                  </Link>
                 </nav>
               </aside>
               <div className="col-lg-9">

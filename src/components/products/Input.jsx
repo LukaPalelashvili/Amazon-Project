@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Input = ({ onChangeCallback }) => {
   const [value, setValue] = useState("");
@@ -10,12 +12,21 @@ const Input = ({ onChangeCallback }) => {
   };
 
   return (
-    <input
-      type="text"
-      value={value}
-      onChange={handleChange}
-      placeholder="Type to search"
-    />
+    <div class="input-group">
+      <div class="form-outline" data-mdb-input-init>
+        <input
+          id="search-input"
+          type="search"
+          value={value}
+          placeholder="Type to search"
+          onChange={handleChange}
+          class="form-control"
+        />
+      </div>
+      <button id="search-button" type="button" class="btn btn-primary">
+        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+      </button>
+    </div>
   );
 };
 
