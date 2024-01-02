@@ -17,8 +17,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useForceUpdate } from "../../hooks/useForceUpdate.jsx";
 import Ratings from "./Ratings.jsx";
-
 import Price from "./Price.jsx";
+import ActiveStars from "../../images/stars-active.svg";
+import DisableStars from "../../images/stars-disable.svg";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -27,6 +28,8 @@ export default function Products() {
   const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
 
   const [isGrid, setIsGrid] = useState(true);
 
@@ -105,9 +108,56 @@ export default function Products() {
     localStorage.setItem("products", JSON.stringify(products));
   }, [products]);
 
-  // const handleAddProduct = (newProduct) => {
-  //   setProducts([...products, newProduct]);
-  // };
+  const handleBrandSelect = (selectedBrand) => {
+    if (selectedBrands.includes(selectedBrand)) {
+      const updatedBrands = selectedBrands.filter(
+        (brand) => brand !== selectedBrand
+      );
+      setSelectedBrands(updatedBrands);
+    } else {
+      setSelectedBrands([...selectedBrands, selectedBrand]);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedBrands.length === 0) {
+      setFilteredProducts(products);
+    } else {
+      const filteredBySelectedBrands = products.filter((product) =>
+        selectedBrands.includes(product.brand)
+      );
+      setFilteredProducts(filteredBySelectedBrands);
+    }
+  }, [selectedBrands, products]);
+
+  const renderStarRating = (rating) => {
+    const starPercentage = (rating / 5) * 100;
+    return (
+      <ul className="rating-stars">
+        <li className="stars-active" style={{ width: `${starPercentage}%` }}>
+          <img src={ActiveStars} alt="" />
+        </li>
+        <li>
+          <img src={DisableStars} alt="" />
+        </li>
+      </ul>
+    );
+  };
+
+  const handleRatingSelect = (ratings) => {
+    setSelectedRatings(ratings);
+  };
+
+  useEffect(() => {
+    if (selectedRatings.length === 0) {
+      setFilteredProducts(products);
+    } else {
+      const filteredBySelectedRatings = products.filter((product) =>
+        selectedRatings.includes(Math.round(product.rating))
+      );
+      setFilteredProducts(filteredBySelectedRatings);
+    }
+  }, [selectedRatings, products]);
 
   return (
     <>
@@ -151,8 +201,8 @@ export default function Products() {
                 className="collapse card bg-light d-lg-block mb-5"
               >
                 <CategoryList onSelectCategory={handleCategorySelect} />
-                <Brands />
-                <Ratings />
+                <Brands onBrandSelect={handleBrandSelect} />
+                <Ratings onRatingSelect={handleRatingSelect} />
               </div>
             </aside>
             <main className={`${isGrid ? "row col-lg-9" : "col-lg-9"}`}>
@@ -270,7 +320,7 @@ export default function Products() {
                           </p>
                           <div className="rating-wrap mb-2">
                             <span className="label-rating text-warning">
-                              {product.rating}
+                              {renderStarRating(Math.round(product.rating))}
                             </span>
                           </div>
                           <div className="mb-3 h5">

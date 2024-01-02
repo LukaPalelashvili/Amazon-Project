@@ -1,22 +1,29 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-const Brands = () => {
-  const [brand, setBrands] = useState([]);
+const Brands = ({ onBrandSelect }) => {
+  const [uniqueBrands, setUniqueBrands] = useState([]);
   const url = "https://dummyjson.com/products";
 
   const fetchBrands = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
-        console.log("brands:", products.products);
-        setBrands(products.products);
+        const allBrands = products.products.map((product) => product.brand);
+        // Use Set to get unique brand names
+        const uniqueBrandSet = new Set(allBrands);
+        const uniqueBrandArray = Array.from(uniqueBrandSet);
+        setUniqueBrands(uniqueBrandArray);
       });
   };
 
   useEffect(() => {
     fetchBrands();
   }, []);
+
+  const handleBrandSelect = (selectedBrand) => {
+    onBrandSelect(selectedBrand);
+  };
 
   return (
     <>
@@ -32,26 +39,17 @@ const Brands = () => {
         </a>
         <div className="collapse show" id="collapse_aside2">
           <div className="pt-3">
-            {brand.map((product) => (
-              <label className="form-check mb-2">
+            {uniqueBrands.map((brand) => (
+              <label className="form-check mb-2" key={brand}>
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  defaultValue=""
-                  defaultChecked=""
+                  value={brand}
+                  onChange={() => handleBrandSelect(brand)}
                 />
-                <span className="form-check-label"> {product.brand} </span>
+                <span className="form-check-label"> {brand} </span>
               </label>
             ))}
-            <label className="form-check mb-2">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                defaultValue=""
-                defaultChecked=""
-              />
-              <span className="form-check-label"> Asus </span>
-            </label>
           </div>
         </div>
       </article>
