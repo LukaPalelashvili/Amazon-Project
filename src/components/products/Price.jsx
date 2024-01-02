@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Price = () => {
   return (
@@ -11,7 +13,7 @@ const Price = () => {
           data-bs-target="#collapse_aside3"
         >
           <strong>Prices </strong>
-          <i className="icon-control fa fa-chevron-down" />
+          <FontAwesomeIcon icon={faChevronDown} className="icon-control" />
         </a>
         <div className="collapse show" id="collapse_aside3">
           <div className="pt-3">

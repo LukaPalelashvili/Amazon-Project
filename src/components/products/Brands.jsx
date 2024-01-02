@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Brands = ({ onBrandSelect }) => {
   const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -35,7 +37,7 @@ const Brands = ({ onBrandSelect }) => {
           data-bs-target="#collapse_aside2"
         >
           <strong>Brands </strong>
-          <i className="icon-control fa fa-chevron-down" />
+          <FontAwesomeIcon className="icon-control" icon={faChevronDown} />
         </a>
         <div className="collapse show" id="collapse_aside2">
           <div className="pt-3">

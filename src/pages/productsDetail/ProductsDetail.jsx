@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/cart";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
+
 const ProductsDetail = (products) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -88,22 +91,16 @@ const ProductsDetail = (products) => {
                   <ul className="rating-stars">
                     <li style={{ width: "80%" }} className="stars-active">
                       {" "}
-                      <img src="images/misc/stars-active.svg" alt="" />{" "}
+                      {/* <img src="images/misc/stars-active.svg" alt="" />{" "} */}
                     </li>
                     <li>
                       {" "}
-                      <img src="images/misc/starts-disable.svg" alt="" />{" "}
+                      {/* <img src="images/misc/starts-disable.svg" alt="" />{" "} */}
                     </li>
                   </ul>
                   <b className="label-rating text-warning"> {product.rating}</b>
-                  <i className="dot" />
-                  <span className="label-rating text-muted">
-                    {" "}
-                    <i className="fa fa-shopping-basket" /> 154 orders{" "}
-                  </span>
-                  <i className="dot" />
                   <span className="label-rating text-success">In stock</span>
-                </div>{" "}
+                </div>
                 <div className="mb-2">
                   <var className="price h5">{product.price}$</var>
                   <span className="text-muted"></span>
@@ -173,11 +170,11 @@ const ProductsDetail = (products) => {
                     notifyAddedToCart(product);
                   }}
                 >
-                  <i className="me-1 fa fa-shopping-basket" />
+                  <FontAwesomeIcon icon={faCartShopping} className="me-1" />
                   Add to cart
                 </button>
                 <a href="#" className="btn  btn-light">
-                  <i className="me-1 fa fa-heart" /> Save{" "}
+                  <FontAwesomeIcon icon={faBookmark} className="me-1" />
                 </a>
               </article>
             </main>

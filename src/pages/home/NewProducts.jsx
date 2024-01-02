@@ -86,7 +86,7 @@ const NewProducts = () => {
                             addToSave(product);
                           }}
                         >
-                          <FontAwesomeIcon icon={faBookmark}></FontAwesomeIcon>
+                          <FontAwesomeIcon icon={faBookmark} />
                         </button>
                       ) : (
                         <button
@@ -96,7 +96,7 @@ const NewProducts = () => {
                             addToSave(product);
                           }}
                         >
-                          <FontAwesomeIcon icon={faBookmark}></FontAwesomeIcon>
+                          <FontAwesomeIcon icon={faBookmark} />
                         </button>
                       )}
                     </div>

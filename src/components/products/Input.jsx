@@ -12,19 +12,19 @@ const Input = ({ onChangeCallback }) => {
   };
 
   return (
-    <div class="input-group">
-      <div class="form-outline" data-mdb-input-init>
+    <div className="input-group">
+      <div className="form-outline" data-mdb-input-init>
         <input
           id="search-input"
           type="search"
           value={value}
           placeholder="Type to search"
           onChange={handleChange}
-          class="form-control"
+          className="form-control"
         />
       </div>
-      <button id="search-button" type="button" class="btn btn-primary">
-        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+      <button id="search-button" type="button" className="btn btn-primary">
+        <FontAwesomeIcon icon={faSearch} />
       </button>
     </div>
   );

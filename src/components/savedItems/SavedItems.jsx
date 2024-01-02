@@ -4,6 +4,8 @@ import "./savedItems.css";
 import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
 import { SaveContext } from "../../context/saveContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const SavedItems = ({}) => {
   const { saveItems, removeFromSave } = useContext(SaveContext);
@@ -72,7 +74,8 @@ const SavedItems = ({}) => {
                 <hr />
 
                 <Link to={"/products"} className="btn btn-light">
-                  <i className="fa fa-arrow-left me-2" /> Back to shop
+                  <FontAwesomeIcon className="fa me-2" icon={faArrowLeft} />
+                  Back Back to shop
                 </Link>
               </div>
             </div>{" "}

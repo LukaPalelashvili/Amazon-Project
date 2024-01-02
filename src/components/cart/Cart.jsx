@@ -4,6 +4,8 @@ import "./cart.css";
 import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../context/cart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Cart = ({}) => {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } =
@@ -98,7 +100,8 @@ const Cart = ({}) => {
                 <hr />
 
                 <Link to={"/products"} className="btn btn-light">
-                  <i className="fa fa-arrow-left me-2" /> Back to shop
+                  <FontAwesomeIcon className="fa me-2" icon={faArrowLeft} />
+                  Back to shop
                 </Link>
               </div>
             </div>{" "}
@@ -147,7 +150,7 @@ const Cart = ({}) => {
                   </a>
                 </div>
                 <p className="text-center mt-3">
-                  <img src="images/misc/payments.png" height={24} />
+                  {/* <img src="images/misc/payments.png" height={24} /> */}
                 </p>
               </div>
               <button

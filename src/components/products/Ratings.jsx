@@ -2,6 +2,8 @@ import React from "react";
 import ActiveStars from "../../images/stars-active.svg";
 import DisableStars from "../../images/stars-disable.svg";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Ratings = ({ onRatingSelect }) => {
   const [selectedRatings, setSelectedRatings] = useState([]);
@@ -45,7 +47,7 @@ const Ratings = ({ onRatingSelect }) => {
           data-bs-target="#collapse_aside5"
         >
           <strong>Rating </strong>
-          <i className="icon-control fa fa-chevron-down" />
+          <FontAwesomeIcon icon={faChevronDown} className="icon-control" />
         </a>
         <div className="collapse show" id="collapse_aside5">
           <div className="pt-3">

@@ -12,7 +12,6 @@ const ProductsSwitch = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
-        console.log("pr", products.products);
         setProducts(products.products);
       });
   };
@@ -36,10 +35,10 @@ const ProductsSwitch = () => {
                 </div>
                 <figcaption className="p-3 border-top">
                   <div className="float-end btn btn-light btn-icon">
-                    <FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faHeart} />
                   </div>
                   <div className="float-end btn btn-light btn-icon buy-prodact">
-                    <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faCartShopping} />
                   </div>
                   <div className="title mb-1">
                     {product.description.slice(0, 40)}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./products.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const CategoryList = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
@@ -27,8 +29,9 @@ const CategoryList = ({ onSelectCategory }) => {
     <article className="p-3 p-lg-4 border-bottom">
       <a>
         <strong>categories </strong>
-        <i className="icon-control fa fa-chevron-down" />
       </a>
+      <FontAwesomeIcon className="icon-control" icon={faChevronDown} />
+
       <div className="collapse show" id="collapse_aside1">
         <div className="pt-3">
           <button className="category-button" onClick={showAllCategories}>

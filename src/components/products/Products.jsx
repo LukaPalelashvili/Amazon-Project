@@ -37,7 +37,7 @@ export default function Products() {
 
   const toggleLayout = () => {
     setIsGrid(!isGrid);
-    forceUpdate(); //
+    forceUpdate();
   };
 
   const url = "https://dummyjson.com/products";
@@ -45,7 +45,6 @@ export default function Products() {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
-        console.log("pr", products.products);
         setProducts(products.products);
       });
   };
@@ -95,7 +94,6 @@ export default function Products() {
         setProducts([...sortedProducts]);
         break;
       default:
-      // setProducts(products);
     }
   };
 
@@ -173,7 +171,7 @@ export default function Products() {
                 data-bs-original-title="Grid view"
                 onClick={toggleLayout}
               >
-                <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faBars} />
               </a>
               <a
                 href="#"
@@ -183,7 +181,7 @@ export default function Products() {
                 data-bs-original-title="Grid view"
                 onClick={toggleLayout}
               >
-                <FontAwesomeIcon icon={faGrip}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faGrip} />
               </a>
             </div>
             <div className="btn-group mb-3 mb-md-0">

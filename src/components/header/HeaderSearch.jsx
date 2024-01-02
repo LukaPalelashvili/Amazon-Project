@@ -33,7 +33,7 @@ const HeaderSearch = ({
         id="search-button"
         type="submit"
       >
-        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+        <FontAwesomeIcon icon={faSearch} />
       </button>
     </>
   );
