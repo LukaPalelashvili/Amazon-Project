@@ -14,6 +14,7 @@ import NewProducts from "./pages/home/NewProducts";
 import Cart from "./components/cart/Cart";
 import SavedItems from "./components/savedItems/SavedItems";
 import Information from "./pages/information/Information";
+import Contact from "./pages/contact/Contact";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/saved" element={<SavedItems />} />
         <Route path="/info" element={<Information />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
 import AuthContext from "../../context/AuthContext";
-import logo from "../../images/logo.svg";
+import logo from "../../images/logo-2.svg";
 import { CartContext } from "../../context/cart";
 import { SaveContext } from "../../context/saveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -83,13 +83,13 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-lg col-md col-6 flex-grow-0">
-                <div className="dropdown float-end">
-                  <button
-                    data-bs-toggle="dropdown"
-                    className="dropdown-toggle btn btn-primary text-nowrap"
+                <div className="float-end">
+                  <Link
+                    to={"/products"}
+                    className="btn btn-primary text-nowrap"
                   >
-                    Categories
-                  </button>
+                    Discover
+                  </Link>
                 </div>
               </div>
               <div className="col-lg col-md order-lg-last">
@@ -193,181 +193,20 @@ const Header = () => {
           <div className="container">
             <div className="" id="main_nav" style={{}}>
               <ul className="navbar-nav">
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    All templates
-                  </a>
-                  <nav className="dropdown-menu p-4">
-                    <div className="d-flex flex-wrap flex-sm-nowrap">
-                      <div style={{ width: "12rem" }}>
-                        <h6>Ads website</h6>
-                        <ul className="list-menu mb-3">
-                          <li>
-                            <a className="text-body" href="/p-ads-index">
-                              Ads home
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-ads-list">
-                              Ads listing
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-ads-detail">
-                              Ads detail
-                            </a>
-                          </li>
-                        </ul>
-                        <h6>Techstore</h6>
-                        <ul className="list-menu mb-3">
-                          <li>
-                            <a className="text-body" href="/p-techstore-index">
-                              Main page
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-techstore-list">
-                              Listing view
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-techstore-detail">
-                              Item details
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style={{ width: "12rem" }}>
-                        <h6>Marketplace</h6>
-                        <ul className="list-menu mb-3">
-                          <li>
-                            <a className="text-body" href="/p-market-index">
-                              Main page
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-market-list">
-                              Listing view
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-market-list-grid">
-                              Grid view
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-market-detail">
-                              Item detail
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-market-cart">
-                              Cart page
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-market-order">
-                              Order page
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style={{ width: "12rem" }}>
-                        <h6>Food order</h6>
-                        <ul className="list-menu mb-3">
-                          <li>
-                            <a className="text-body" href="/p-food-index">
-                              Main page
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-food-detail">
-                              Restaurant foods
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-food-order">
-                              Food order
-                            </a>
-                          </li>
-                        </ul>
-                        <h6>Common pages</h6>
-                        <ul className="list-menu mb-3">
-                          <li>
-                            <a className="text-body" href="/p-info-pricing">
-                              Pricing page
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-user-profile">
-                              User profile
-                            </a>
-                          </li>
-                          <li>
-                            <a className="text-body" href="/p-user-signup">
-                              User register
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <figure className="p-5 text-center bg-warning-light rounded">
-                      <a href="#" className="btn btn-warning">
-                        Download all templates
-                      </a>
-                    </figure>
-                  </nav>
-                </li>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    Pages
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item" href="/p-techstore-index">
-                        Page home
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="/p-techstore-list">
-                        Page listing
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="/p-techstore-detail">
-                        Page detail
-                      </a>
-                    </li>
-                  </ul>
-                </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Services
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/products"}>
+                  <Link to={"/products"} className="nav-link">
                     Products
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Services
-                  </a>
-                </li>
+                <li className="nav-item"></li>
                 <li className="nav-item">
                   <Link className="nav-link" to={"/info"}>
                     Information
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/contact"}>
+                    Contact Us
                   </Link>
                 </li>
               </ul>
