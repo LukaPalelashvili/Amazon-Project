@@ -7,12 +7,13 @@ const TopPanel = ({ onSelectedChange, sortBy }) => {
 
   return (
     <div>
-      <select onChange={handleSortChange}>
-        <option value={""}>აირჩიეთ</option>
-        <option value={"decr-by-price"}>ფასი კლებადობით</option>
-        <option value={"incr-by-price"}>ფასი ზრდადობით</option>
-        <option value={"incr-by-model"}>მოდელის მიხედვით (ზრდადობით)</option>
-        <option value={"decr-by-model"}>მოდელის მიხედვით (კლებადობით)</option>
+      <select
+        className="form-select d-inline-block w-auto"
+        onChange={handleSortChange}
+      >
+        <option value={""}>Choose by price</option>
+        <option value={"decr-by-price"}>by decrease</option>
+        <option value={"incr-by-price"}>By Increase</option>
       </select>
     </div>
   );

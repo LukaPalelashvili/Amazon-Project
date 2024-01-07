@@ -11,7 +11,9 @@ import Footer from "./components/footer/Footer";
 import Navigation from "./pages/Navigation";
 import Home from "./pages/home/Home";
 import NewProducts from "./pages/home/NewProducts";
-import Cart from "./components/Cart";
+import Cart from "./components/cart/Cart";
+import SavedItems from "./components/savedItems/SavedItems";
+import Contact from "./pages/contact/Contact";
 import Information from "./pages/information/Information";
 import Dashboard from "./pages/admin/dashboard.jsx";
 import Customers from "./pages/admin/customers.jsx";
@@ -86,6 +88,8 @@ const routes = [
   { path: "/nav", component: Navigation },
   { path: "/new", component: NewProducts },
   { path: "/cart", component: Cart },
+  { path: "/saved", component: SavedItems },
+  { path: "/contact", component: Contact },
   { path: "/info", component: Information },
   { path: "/admin", component: Dashboard, isAdmin: true },
 ];

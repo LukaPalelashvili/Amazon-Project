@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/cart";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
+
 const ProductsDetail = (products) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -12,7 +15,7 @@ const ProductsDetail = (products) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://ngglobalwebapi20231210182820.azurewebsites.net/api/product/products/${productId}`
+          `https://dummyjson.com/products/${productId}`
         );
         const data = await response.json();
         setProduct(data);
@@ -79,47 +82,39 @@ const ProductsDetail = (products) => {
                     />{" "}
                   </a>
                 </div>{" "}
-                {/* thumbs-wrap.// */}
               </figure>{" "}
-              {/* gallery-wrap .end// */}
             </aside>
             <main className="col-lg-6">
               <article className="ps-lg-3">
-                <h4 className="title text-dark">{product.name}</h4>
+                <h4 className="title text-dark">{product.title}</h4>
                 <div className="rating-wrap my-3">
                   <ul className="rating-stars">
                     <li style={{ width: "80%" }} className="stars-active">
                       {" "}
-                      <img src="images/misc/stars-active.svg" alt="" />{" "}
+                      {/* <img src="images/misc/stars-active.svg" alt="" />{" "} */}
                     </li>
                     <li>
                       {" "}
-                      <img src="images/misc/starts-disable.svg" alt="" />{" "}
+                      {/* <img src="images/misc/starts-disable.svg" alt="" />{" "} */}
                     </li>
                   </ul>
-                  <b className="label-rating text-warning"> 4.5</b>
-                  <i className="dot" />
-                  <span className="label-rating text-muted">
-                    {" "}
-                    <i className="fa fa-shopping-basket" /> 154 orders{" "}
-                  </span>
-                  <i className="dot" />
+                  <b className="label-rating text-warning"> {product.rating}</b>
                   <span className="label-rating text-success">In stock</span>
-                </div>{" "}
-                <div className="mb-2">
-                  <var className="price h5">$75.00</var>
-                  <span className="text-muted">/per box</span>
                 </div>
-                <p>{product.description.substring(1, 300)}</p>
+                <div className="mb-2">
+                  <var className="price h5">{product.price}$</var>
+                  <span className="text-muted"></span>
+                </div>
+                <p>{product.description.substring(0, 300)}</p>
                 <dl className="row">
-                  <dt className="col-3 fw-normal text-muted">Type:</dt>
-                  <dd className="col-9">Regular</dd>
+                  <dt className="col-3 fw-normal text-muted">Category:</dt>
+                  <dd className="col-9">{product.category}</dd>
                   <dt className="col-3 fw-normal text-muted">Color</dt>
                   <dd className="col-9">Silver white</dd>
-                  <dt className="col-3 fw-normal text-muted">Material</dt>
-                  <dd className="col-9">Metallic, waterproof </dd>
+                  <dt className="col-3 fw-normal text-muted">Stock</dt>
+                  <dd className="col-9">{product.stock} </dd>
                   <dt className="col-3 fw-normal text-muted">Brand</dt>
-                  <dd className="col-9">Samsung </dd>
+                  <dd className="col-9">{product.brand} </dd>
                 </dl>
                 <hr />
                 <div className="row mb-3">
@@ -175,11 +170,11 @@ const ProductsDetail = (products) => {
                     notifyAddedToCart(product);
                   }}
                 >
-                  <i className="me-1 fa fa-shopping-basket" />
+                  <FontAwesomeIcon icon={faCartShopping} className="me-1" />
                   Add to cart
                 </button>
                 <a href="#" className="btn  btn-light">
-                  <i className="me-1 fa fa-heart" /> Save{" "}
+                  <FontAwesomeIcon icon={faBookmark} className="me-1" />
                 </a>
               </article>
             </main>

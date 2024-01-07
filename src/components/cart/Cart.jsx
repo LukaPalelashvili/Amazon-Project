@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { CartContext } from "../context/cart.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import "./cart.css";
-import EmptyCart from "../images/empty-cart.png";
+import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../context/cart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const Cart = () => {
+const Cart = ({}) => {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } =
     useContext(CartContext);
-
-  const { id, image, name, price, oldPrice } = cartItems;
 
   return (
     <section className="py-4">
@@ -26,19 +26,19 @@ const Cart = () => {
                         <figure className="d-flex align-items-start">
                           <div className="me-3 flex-shrink-0">
                             <img
-                              src={item.images ? item.images?.[0] : item.image}
-                              alt={item.name}
+                              src={item.images[0]}
+                              alt={item.title}
                               className="cart-img"
                             />
                           </div>
                           <figcaption className="info">
                             <a className="title" href="/p-market-detail">
-                              {item.name}
+                              {item.title}
                             </a>
                             <p className="text-muted">
-                              Size: medium, Color: blue, Material: Plastic{" "}
+                              {/* {item.title} */}
                               <br />
-                              Seller: Artel Market
+                              {item.description}
                             </p>
                             <button
                               className="btn btn-light text-danger btn-sm"
@@ -48,9 +48,12 @@ const Cart = () => {
                             >
                               Remove
                             </button>
-                            <a href="#" className="btn btn-light btn-sm">
-                              Save for later
-                            </a>
+                            <Link
+                              to={`/product-detail/${item.id}`}
+                              className="btn btn-light btn-sm"
+                            >
+                              Watch Product
+                            </Link>
                           </figcaption>
                         </figure>
                       </div>
@@ -67,12 +70,12 @@ const Cart = () => {
                           >
                             +
                           </button>
-                          <p>{item.quantity}</p>
+                          <p>${item.price}</p>
                           <button
                             className="quantity-button"
                             onClick={() => {
                               const cartItem = cartItems.find(
-                                (product) => product.id === item.id,
+                                (product) => product.id === item.id
                               );
                               if (cartItem.quantity === 1) {
                                 handleRemoveFromCart(item);
@@ -97,7 +100,8 @@ const Cart = () => {
                 <hr />
 
                 <Link to={"/products"} className="btn btn-light">
-                  <i className="fa fa-arrow-left me-2" /> Back to shop
+                  <FontAwesomeIcon className="fa me-2" icon={faArrowLeft} />
+                  Back to shop
                 </Link>
               </div>
             </div>{" "}
@@ -146,7 +150,7 @@ const Cart = () => {
                   </a>
                 </div>
                 <p className="text-center mt-3">
-                  <img src="images/misc/payments.png" height={24} />
+                  {/* <img src="images/misc/payments.png" height={24} /> */}
                 </p>
               </div>
               <button
