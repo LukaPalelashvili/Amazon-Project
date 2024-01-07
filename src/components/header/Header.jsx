@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 
 const Header = () => {
-  const { isLoggedIn, auth, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [showModal, setshowModal] = useState(false);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const toggle = () => {
@@ -194,24 +194,18 @@ const Header = () => {
                 <div className="float-md-end">
                   <FontAwesomeIcon icon="fa-solid fa-user" />
                   <span className="ms-1 d-none d-sm-inline-block"> </span>
-                  {isLoggedIn ? (
+                  {user ? (
                     <>
-                      <p className="px-4 py-2 bg-gray-800 text-white text-xs">
-                        Welcome, {hello}!
-                      </p>
+                      <i className="fa fa-heart" />
+                      <span className="ms-1 d-none d-sm-inline-block">
+                        {" "}
+                        Welcome, {user.name}!
+                      </span>
                       <button onClick={logout}>Log out</button>
                     </>
                   ) : (
                     <Link to={"/login"}>Log in</Link>
                   )}
-
-                  <a href="#" className="btn btn-light shadow-sm">
-                    <i className="fa fa-heart" />
-                    <span className="ms-1 d-none d-sm-inline-block">
-                      {" "}
-                      Wishlist Welcome, {auth.name}!
-                    </span>
-                  </a>
 
                   {/* <Link
                     data-bs-toggle="offcanvas"

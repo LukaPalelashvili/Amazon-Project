@@ -7,15 +7,21 @@ import { CartProvider } from "./context/cart.jsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./provider/AuthContextProvider.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "./theme/index.js";
+
+const theme = createTheme();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CartProvider>
-      <AuthContextProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AuthContextProvider>
+      <BrowserRouter>
+        <AuthContextProvider>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </AuthContextProvider>
+      </BrowserRouter>
     </CartProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

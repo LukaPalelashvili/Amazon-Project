@@ -5,9 +5,11 @@ import "./cart.css";
 import EmptyCart from "../images/empty-cart.png";
 import { Link } from "react-router-dom";
 
-const Cart = ({}) => {
+const Cart = () => {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } =
     useContext(CartContext);
+
+  const { id, image, name, price, oldPrice } = cartItems;
 
   return (
     <section className="py-4">
@@ -24,7 +26,7 @@ const Cart = ({}) => {
                         <figure className="d-flex align-items-start">
                           <div className="me-3 flex-shrink-0">
                             <img
-                              src={item.images[0]}
+                              src={item.images ? item.images?.[0] : item.image}
                               alt={item.name}
                               className="cart-img"
                             />
@@ -70,7 +72,7 @@ const Cart = ({}) => {
                             className="quantity-button"
                             onClick={() => {
                               const cartItem = cartItems.find(
-                                (product) => product.id === item.id
+                                (product) => product.id === item.id,
                               );
                               if (cartItem.quantity === 1) {
                                 handleRemoveFromCart(item);

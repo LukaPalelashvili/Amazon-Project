@@ -1,5 +1,5 @@
-import Products from "./components/Products";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/header/Header";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -13,27 +13,94 @@ import Home from "./pages/home/Home";
 import NewProducts from "./pages/home/NewProducts";
 import Cart from "./components/Cart";
 import Information from "./pages/information/Information";
+import Dashboard from "./pages/admin/dashboard.jsx";
+import Customers from "./pages/admin/customers.jsx";
+import AdminProducts from "./pages/admin/products";
+import Products from "./components/Products.jsx";
+import AuthContext from "./context/AuthContext.js";
+import Account from "./pages/admin/account.jsx";
+import ProductPage from "./pages/admin/products-page.jsx"; // Assuming this is the correct import
+
+function getLayout(isAdmin, Component) {
+  const { user, isLoadingUser } = useContext(AuthContext);
+
+  if (isAdmin) {
+    if (isLoadingUser) {
+      return <div>Loading...</div>;
+    } else if (
+      !user ||
+      (user.role !== "admin" && user.role !== "product-owner")
+    ) {
+      return <Navigate to={"/login"} />;
+    }
+  }
+
+  return isAdmin ? (
+    <>{Component}</>
+  ) : (
+    <>
+      <Header />
+      {Component}
+      <Footer />
+    </>
+  );
+}
+
+const routes = [
+  { path: "/", component: Home },
+  { path: "/admin/customers", component: Customers, isAdmin: true },
+  { path: "/admin/products", component: AdminProducts, isAdmin: true },
+  { path: "/admin/account", component: Account, isAdmin: true },
+  {
+    path: "/admin/customers/add",
+    component: () => <Account mode="create" />,
+    isAdmin: true,
+  },
+  {
+    path: "/admin/customers/edit/:id",
+    component: () => <Account mode="update" />,
+    isAdmin: true,
+  },
+  {
+    path: "/admin/user/profile",
+    component: () => <Account mode="update" isAdmin />,
+    isAdmin: true,
+  },
+  {
+    path: "/admin/products/edit/:id",
+    component: () => <ProductPage mode="update" />,
+    isAdmin: true,
+  },
+  {
+    path: "/admin/products/add",
+    component: () => <ProductPage mode="create" />,
+    isAdmin: true,
+  },
+  { path: "/products", component: Products },
+  { path: "/login", component: Login },
+  { path: "/register", component: Register },
+  { path: "/users-list", component: UsersList },
+  { path: "/products2", component: ProductsSwitch },
+  { path: "/product-detail/:productId", component: ProductsDetail },
+  { path: "/user-profile", component: UserProfile },
+  { path: "/nav", component: Navigation },
+  { path: "/new", component: NewProducts },
+  { path: "/cart", component: Cart },
+  { path: "/info", component: Information },
+  { path: "/admin", component: Dashboard, isAdmin: true },
+];
 
 function App() {
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/users-list" element={<UsersList />} />
-        <Route path="/products2" element={<ProductsSwitch />} />
-        <Route path="/product-detail/:productId" element={<ProductsDetail />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="/nav" element={<Navigation />} />
-        <Route path="/new" element={<NewProducts />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/info" element={<Information />} />
-      </Routes>
-      <Footer />
-    </>
+    <Routes>
+      {routes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          element={getLayout(route.isAdmin, <route.component />)}
+        />
+      ))}
+    </Routes>
   );
 }
 
