@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../context/cart";
+import { CartContext } from "../../context/CartContext.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faBookmark,
+  faBookBookmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as faSolidBookmark } from "@fortawesome/free-regular-svg-icons";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { SaveContext } from "../../context/SaveContext.jsx";
 
 const ProductsDetail = (products) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [activeImage, setActiveImage] = useState(null);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const { addToSave, isItemInSave, removeFromSave } = useContext(SaveContext);
+
+  const [quantity, setQuantity] = useState(1);
+
+  console.log("cartItems", cartItems);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://dummyjson.com/products/${productId}`
+          `https://dummyjson.com/products/${productId}`,
         );
         const data = await response.json();
         setProduct(data);
@@ -24,8 +38,32 @@ const ProductsDetail = (products) => {
       }
     };
 
+    if (isItemInCart) {
+      setQuantity(isItemInCart.quantity);
+    }
+
     fetchData();
   }, [productId]);
+
+  const isItemInCart = useMemo(
+    () => cartItems.find((cartItem) => cartItem?.id === product?.id),
+    [cartItems, product],
+  );
+
+  const handleAddToCart = (product) => {
+    addToCart(product, quantity);
+    toast.success("Item added to cart");
+  };
+
+  const handleSaveClick = () => {
+    if (isItemInSave(product)) {
+      removeFromSave(product);
+      toast.success("Item removed from saved items");
+    } else {
+      addToSave(product);
+      toast.success("Item added to saved items");
+    }
+  };
 
   if (!product) {
     return <div>Product not found</div>;
@@ -38,51 +76,31 @@ const ProductsDetail = (products) => {
           <div className="row">
             <aside className="col-lg-6">
               <figure className="gallery-wrap">
-                <a
-                  href="#"
+                <div
                   className="img-main-wrap mb-3 img-thumbnail"
                   style={{ height: 520 }}
                 >
-                  <img className="h-100 img-cover" src={product.images[0]} />
-                </a>
+                  <img
+                    className="h-100 img-cover"
+                    src={activeImage || product.images[0]}
+                    alt={product.title}
+                  />
+                </div>
                 <div className="thumbs-wrap text-center overflow-auto text-nowrap">
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src={product.images[0]}
-                    />
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src={product.images[1]}
-                    />
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src={product.images[2]}
-                    />{" "}
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src={product.images[3]}
-                    />
-                  </a>
-                  <a href="#" className="item-thumb">
-                    <img
-                      className="img-thumbnail size-60x60"
-                      height={60}
-                      src={product.images[4]}
-                    />{" "}
-                  </a>
-                </div>{" "}
-              </figure>{" "}
+                  {product.images.map((image, index) => (
+                    <div key={product.images[index]} className="item-thumb">
+                      <img
+                        className="img-thumbnail size-60x60"
+                        height={60}
+                        onMouseOver={() => setActiveImage(image)}
+                        onClick={() => setActiveImage(image)}
+                        alt={product.title}
+                        src={product.images[index]}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </figure>
             </aside>
             <main className="col-lg-6">
               <article className="ps-lg-3">
@@ -99,18 +117,15 @@ const ProductsDetail = (products) => {
                     </li>
                   </ul>
                   <b className="label-rating text-warning"> {product.rating}</b>
-                  <span className="label-rating text-success">In stock</span>
                 </div>
                 <div className="mb-2">
-                  <var className="price h5">{product.price}$</var>
+                  <var className="price h5">${product.price}</var>
                   <span className="text-muted"></span>
                 </div>
-                <p>{product.description.substring(0, 300)}</p>
+                <p>{product.description}</p>
                 <dl className="row">
                   <dt className="col-3 fw-normal text-muted">Category:</dt>
                   <dd className="col-9">{product.category}</dd>
-                  <dt className="col-3 fw-normal text-muted">Color</dt>
-                  <dd className="col-9">Silver white</dd>
                   <dt className="col-3 fw-normal text-muted">Stock</dt>
                   <dd className="col-9">{product.stock} </dd>
                   <dt className="col-3 fw-normal text-muted">Brand</dt>
@@ -119,17 +134,20 @@ const ProductsDetail = (products) => {
                 <hr />
                 <div className="row mb-3">
                   <div className="col-md-4 col-6 mb-2">
-                    <label className="form-label">Size</label>
-                    <select className="form-select">
-                      <option>Small</option>
-                      <option>Medium</option>
-                      <option>Large</option>
-                    </select>
-                  </div>{" "}
-                  <div className="col-md-4 col-6 mb-2">
                     <label className="form-label d-block">Quantity</label>
                     <div className="input-group input-spinner">
-                      <button className="btn btn-icon btn-light" type="button">
+                      <button
+                        className="btn btn-icon btn-light"
+                        onClick={() =>
+                          setQuantity((qty) => {
+                            if (qty > 1) {
+                              return qty - 1;
+                            }
+                            return qty;
+                          })
+                        }
+                        type="button"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width={22}
@@ -143,9 +161,14 @@ const ProductsDetail = (products) => {
                       <input
                         className="form-control text-center"
                         placeholder=""
-                        defaultValue={14}
+                        onChange={(e) => setQuantity(Number(e.target.value))}
+                        value={quantity}
                       />
-                      <button className="btn btn-icon btn-light" type="button">
+                      <button
+                        onClick={() => setQuantity((qty) => qty + 1)}
+                        className="btn btn-icon btn-light"
+                        type="button"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width={22}
@@ -156,31 +179,43 @@ const ProductsDetail = (products) => {
                           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                         </svg>
                       </button>
-                    </div>{" "}
+                    </div>
                   </div>
                 </div>
-                <a href="#" className="btn  btn-warning">
-                  {" "}
-                  Buy now{" "}
-                </a>
-                <button
-                  className="btn  btn-primary"
-                  onClick={() => {
-                    addToCart(product);
-                    notifyAddedToCart(product);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCartShopping} className="me-1" />
-                  Add to cart
-                </button>
-                <a href="#" className="btn  btn-light">
-                  <FontAwesomeIcon icon={faBookmark} className="me-1" />
-                </a>
+                <div className="d-flex gap-3">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    <FontAwesomeIcon icon={faCartShopping} className="me-1" />
+                    Add to cart
+                  </button>
+                  <button className="btn btn-light" onClick={handleSaveClick}>
+                    <FontAwesomeIcon
+                      icon={
+                        isItemInSave(product) ? faBookmark : faSolidBookmark
+                      }
+                      className="me-1"
+                    />
+                  </button>
+                </div>
               </article>
             </main>
           </div>
         </div>
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };

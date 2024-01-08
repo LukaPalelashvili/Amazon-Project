@@ -7,23 +7,31 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(
     localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
-      : []
+      : [],
   );
 
-  const addToCart = (item) => {
+  const addToCart = (item, qty = 1) => {
     const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
 
     if (isItemInCart) {
       setCartItems(
         cartItems.map((cartItem) =>
           cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
+            ? { ...cartItem, quantity: cartItem.quantity + qty }
+            : cartItem,
+        ),
       );
     } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      setCartItems([...cartItems, { ...item, quantity: qty }]);
     }
+  };
+
+  const updateQuantity = (item, qty) => {
+    setCartItems(
+      cartItems.map((cartItem) =>
+        cartItem.id === item.id ? { ...cartItem, quantity: qty } : cartItem,
+      ),
+    );
   };
 
   const removeFromCart = (item) => {
@@ -32,13 +40,7 @@ export const CartProvider = ({ children }) => {
     if (isItemInCart.quantity === 1) {
       setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
     } else {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-      );
+      setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
     }
   };
 
@@ -49,9 +51,20 @@ export const CartProvider = ({ children }) => {
   const getCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
-      0
+      0,
     );
   };
+
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
+
+  const discount = Math.round(getCartTotal() * 0.15);
+  const tax = 14;
+  const shipping = 4;
+
+  const subTotal = getCartTotal() + tax + shipping - discount;
 
   useEffect(() => {
     const data = localStorage.getItem("cartItems");
@@ -69,6 +82,12 @@ export const CartProvider = ({ children }) => {
       value={{
         cartItems,
         addToCart,
+        discount,
+        shipping,
+        tax,
+        totalItems,
+        subTotal,
+        updateQuantity,
         removeFromCart,
         clearCart,
         getCartTotal,

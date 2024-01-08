@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./home.css";
-import { CartContext } from "../../context/cart";
+import { CartContext } from "../../context/CartContext.jsx";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,7 @@ import { SaveContext } from "../../context/saveContext";
 const NewProducts = () => {
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, notifyAddedToCart } = useContext(CartContext);
-  const { saveItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
+  const { savedItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
 
   const url = "https://dummyjson.com/products?limit=10";
 
@@ -17,7 +17,6 @@ const NewProducts = () => {
     return fetch(url)
       .then((res) => res.json())
       .then((products) => {
-        console.log("pr", products.products);
         setProducts(products.products);
       });
   };
@@ -79,7 +78,7 @@ const NewProducts = () => {
                         </button>
                       )}
 
-                      {!saveItems.find((item) => item.id === product.id) ? (
+                      {!savedItems.find((item) => item.id === product.id) ? (
                         <button
                           className={"btn btn-light btn-icon float-end"}
                           onClick={() => {

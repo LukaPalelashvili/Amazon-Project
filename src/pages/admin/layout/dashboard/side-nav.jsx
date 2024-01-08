@@ -71,10 +71,10 @@ export const SideNav = (props) => {
           >
             <div>
               <Typography color="inherit" variant="subtitle1">
-                {user.name}
+                {user?.name}
               </Typography>
               <Typography color={neutral[400]} variant="body2">
-                {ucFirst(user.role)}
+                {ucFirst(user?.role)}
               </Typography>
             </div>
           </Box>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./header.css";
 import AuthContext from "../../context/AuthContext";
 import logo from "../../images/logo-2.svg";
-import { CartContext } from "../../context/cart";
+import { CartContext } from "../../context/CartContext.jsx";
 import { SaveContext } from "../../context/saveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,9 +16,10 @@ import {
 import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
-  const { isLoggedIn, auth, logout } = useContext(AuthContext);
-  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
-  const { saveItems, addToSave, removeFromSave } = useContext(SaveContext);
+  const { user, auth, logout } = useContext(AuthContext);
+  const { cartItems, addToCart, removeFromCart, totalItems } =
+    useContext(CartContext);
+  const { savedItems, addToSave, removeFromSave } = useContext(SaveContext);
   const [searchProduct, setSearchProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(searchProduct);
   const [value, setValue] = useState("");
@@ -47,8 +48,8 @@ const Header = () => {
     } else {
       setFilteredProducts((prevProducts) =>
         searchProduct.filter((product) =>
-          product.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+          product.title.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
       );
     }
   };
@@ -94,49 +95,46 @@ const Header = () => {
               </div>
               <div className="col-lg col-md order-lg-last">
                 <div className="float-md-end">
-                  <div className="btn btn-light shadow-sm">
-                    <FontAwesomeIcon
-                      style={{ color: "gray" }}
-                      className="fa me-1"
-                      icon={faUser}
-                    ></FontAwesomeIcon>
-                    <span className="ms-1 d-none d-sm-inline-block"> </span>
-                    {isLoggedIn ? (
-                      <>
-                        <p className="px-4 py-2 bg-gray-800 text-white text-xs">
-                          Welcome, {hello}!
-                        </p>
-                        <button onClick={logout}>Log out</button>
-                      </>
-                    ) : (
-                      <Link className="btn-light " to={"/login"}>
-                        Log in
-                      </Link>
-                    )}
-                  </div>
+                  <Link
+                    to={"/profile"}
+                    data-bs-toggle="offcanvas"
+                    className="btn btn-light"
+                  >
+                    {/*<FontAwesomeIcon*/}
+                    {/*  style={{ color: "gray" }}*/}
+                    {/*  className="fa me-1"*/}
+                    {/*  icon={faUser}*/}
+                    {/*/>{" "}*/}
+                    <img
+                      src={user?.avatar}
+                      className="rounded-circle me-1"
+                      style={{ width: "20px", height: "20px" }}
+                      alt={user?.name}
+                    />
+                    {user?.name || "Profile"}
+                  </Link>
                   <Link to={"/saved"} className="btn btn-light shadow-sm">
                     <span className="ms-1 d-none d-sm-inline-block">
                       <FontAwesomeIcon
                         style={{ color: "gray" }}
                         className="fa me-1"
                         icon={faBookmark}
-                      ></FontAwesomeIcon>
-                      Saved ({saveItems.length})
+                      />
+                      Saved ({savedItems.length})
                     </span>
                   </Link>
 
                   <Link
                     to={"/cart"}
                     data-bs-toggle="offcanvas"
-                    className="cart-button btn btn-light"
-                    // onClick={toggle}
+                    className="btn btn-light"
                   >
                     <FontAwesomeIcon
                       style={{ color: "gray" }}
                       className="fa me-1"
                       icon={faCartShopping}
-                    ></FontAwesomeIcon>{" "}
-                    Cart ({cartItems.length})
+                    />
+                    Cart ({totalItems})
                   </Link>
 
                   <button
@@ -193,6 +191,11 @@ const Header = () => {
           <div className="container">
             <div className="" id="main_nav" style={{}}>
               <ul className="navbar-nav">
+                <li className="nav-item">
+                  <Link className="nav-link" to={"/"}>
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link to={"/products"} className="nav-link">
                     Products

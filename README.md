@@ -241,31 +241,31 @@ Open the application in your browser and you should see the products displayed.
 
 ## Creating the Cart Context
 
-Context is a way to pass data through the component tree without having to pass props down manually at every level. In this tutorial, we will be using the Context API to pass the cart state to the components that need it. Let's create a new folder named `context` in the `src` folder. Inside the `context` folder, create a new file named `cart.jsx`. We will be using the `createContext` hook to create the cart context.We will also be using the `useState` hook to store the cart state and the `useEffect` hook to persist the cart state in the browser. Let's import the `createContext`, `useState`, and `useEffect` hooks from the `react` package. Add the following code to the `cart.jsx` file:
+Context is a way to pass data through the component tree without having to pass props down manually at every level. In this tutorial, we will be using the Context API to pass the cart state to the components that need it. Let's create a new folder named `context` in the `src` folder. Inside the `context` folder, create a new file named `CartContext.jsx`. We will be using the `createContext` hook to create the cart context.We will also be using the `useState` hook to store the cart state and the `useEffect` hook to persist the cart state in the browser. Let's import the `createContext`, `useState`, and `useEffect` hooks from the `react` package. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 import { createContext, useState, useEffect } from "react";
 ```
 
-Next, let's create the cart context. Add the following code to the `cart.jsx` file:
+Next, let's create the cart context. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 export const CartContext = createContext();
 ```
 
-Next, let's create the `CartProvider` component. Add the following code to the `cart.jsx` file:
+Next, let's create the `CartProvider` component. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 export const CartProvider = ({ children }) => {};
 ```
 
-Initialize the state of the cart. Add the following code to the `cart.jsx` file:
+Initialize the state of the cart. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const [cartItems, setCartItems] = useState([]);
 ```
 
-Looking at how we want our cart to work, we want to be able to add items to the cart, remove items from the cart, and clear the cart. Let's create a function that will be used to add items to the cart. Add the following code to the `cart.jsx` file:
+Looking at how we want our cart to work, we want to be able to add items to the cart, remove items from the cart, and clear the cart. Let's create a function that will be used to add items to the cart. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const addToCart = (item) => {
@@ -294,7 +294,7 @@ Explanation:
 - If the item is already in the cart, we are using the `map` method to increase the quantity of the item in the cart. The `map` method creates a new array populated with the results of calling a provided function on every element in the calling array.
 - If the item is not in the cart, we are using the spread operator to add the item to the cart.
 
-Let's create a function that will be used to remove items from the cart. Add the following code to the `cart.jsx` file:
+Let's create a function that will be used to remove items from the cart. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const removeFromCart = (item) => {
@@ -320,7 +320,7 @@ Explanation:
 - If the quantity of the item is 1, we are using the `filter` method to remove the item from the cart. The `filter` method creates a new array with all elements that pass the test implemented by the provided function.
 - If the quantity of the item is greater than 1, we are using the `map` method to decrease the quantity of the item in the cart. The `map` method creates a new array populated with the results of calling a provided function on every element in the calling array.
 
-Let's create a function that will be used to clear the cart. Add the following code to the `cart.jsx` file:
+Let's create a function that will be used to clear the cart. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const clearCart = () => {
@@ -332,7 +332,7 @@ Explanation:
 
 - We are using the `setCartItems` method to set the cart items to an empty array.
 
-Let's create a function to get the cart total. Add the following code to the `cart.jsx` file:
+Let's create a function to get the cart total. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const getCartTotal = () => {
@@ -347,7 +347,7 @@ Explanation of the code above:
 
 - We are using the `reduce` method to calculate the total price of the items in the cart. The `reduce` method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
-Next, let's use the `useEffect` hook to persist the cart state in the browser. Add the following code to the `cart.jsx` file:
+Next, let's use the `useEffect` hook to persist the cart state in the browser. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 useEffect(() => {
@@ -361,7 +361,7 @@ Explanation:
 - We are using the `JSON.stringify` method to convert the cart items to a string. The `JSON.stringify` method converts a JavaScript object or value to a JSON string.
 - For a real-world application, you will need to use a database to store the cart items, since the `localStorage` API is not secure and can be easily manipulated by the user.
 
-Let's also use the `useEffect` hook to get the cart items from the browser. Add the following code to the `cart.jsx` file:
+Let's also use the `useEffect` hook to get the cart items from the browser. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 useEffect(() => {
@@ -377,7 +377,7 @@ Explanation:
 - We are using the `getItem` method of the `localStorage` API to get the cart items from the browser. The `getItem` method returns the value of the specified `localStorage` item.
 - We are using the `JSON.parse` method to convert the cart items to an object. The `JSON.parse` method parses a JSON string, constructing the JavaScript value or object described by the string.
 
-Let's update the initial state of cart items to the cart items we get from the browser. Add the following code to the `cart.jsx` file:
+Let's update the initial state of cart items to the cart items we get from the browser. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 const [cartItems, setCartItems] = useState(
@@ -389,7 +389,7 @@ const [cartItems, setCartItems] = useState(
 
 This will set the initial state of the cart items to the cart items we get from the browser. If there are no cart items in the browser, the initial state of the cart items will be an empty array.
 
-Next, let's pass the cart state to the components that need it. Add the following code to the `cart.jsx` file:
+Next, let's pass the cart state to the components that need it. Add the following code to the `CartContext.jsx` file:
 
 ```jsx
 return (
@@ -407,7 +407,7 @@ return (
 );
 ```
 
-Your `cart.jsx` file should now look like this:
+Your `CartContext.jsx` file should now look like this:
 
 ```jsx
 import { createContext, useState, useEffect } from "react";
@@ -514,7 +514,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { CartProvider } from "./context/cart.jsx";
+import { CartProvider } from "./context/CartContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -691,7 +691,7 @@ Your `Products.jsx` file should now look like this:
 
 ```jsx
 import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../context/cart.jsx";
+import { CartContext } from "../context/CartContext.jsx";
 import Cart from "./Cart.jsx";
 
 export default function Products() {
@@ -770,7 +770,7 @@ Let's update the `Cart` component to use the `showModal` prop. Open the `Cart.js
 ```jsx
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { CartContext } from "../context/cart.jsx";
+import { CartContext } from "../context/CartContext.jsx";
 
 export default function Cart({ showModal, toggle }) {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } =

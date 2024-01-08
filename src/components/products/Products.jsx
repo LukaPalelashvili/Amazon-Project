@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../context/cart.jsx";
+import { CartContext } from "../../context/CartContext.jsx";
 import { SaveContext } from "../../context/saveContext.jsx";
 import "./products.css";
 import TopPanel from "../topPanel/TopPanel.jsx";
@@ -24,7 +24,7 @@ import DisableStars from "../../images/stars-disable.svg";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
-  const { saveItems, addToSave, removeFromSave } = useContext(SaveContext);
+  const { savedItems, addToSave, removeFromSave } = useContext(SaveContext);
   const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -68,7 +68,7 @@ export default function Products() {
       setFilteredProducts(products);
     } else {
       const filteredByCategory = products.filter(
-        (product) => product.category === selectedCategory
+        (product) => product.category === selectedCategory,
       );
       setFilteredProducts(filteredByCategory);
     }
@@ -76,7 +76,7 @@ export default function Products() {
 
   const filterItems = (searchTerm) => {
     const filteredItems = products.filter((product) =>
-      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      product.title.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     setFilteredProducts(filteredItems);
@@ -109,7 +109,7 @@ export default function Products() {
   const handleBrandSelect = (selectedBrand) => {
     if (selectedBrands.includes(selectedBrand)) {
       const updatedBrands = selectedBrands.filter(
-        (brand) => brand !== selectedBrand
+        (brand) => brand !== selectedBrand,
       );
       setSelectedBrands(updatedBrands);
     } else {
@@ -122,7 +122,7 @@ export default function Products() {
       setFilteredProducts(products);
     } else {
       const filteredBySelectedBrands = products.filter((product) =>
-        selectedBrands.includes(product.brand)
+        selectedBrands.includes(product.brand),
       );
       setFilteredProducts(filteredBySelectedBrands);
     }
@@ -151,7 +151,7 @@ export default function Products() {
       setFilteredProducts(products);
     } else {
       const filteredBySelectedRatings = products.filter((product) =>
-        selectedRatings.includes(Math.round(product.rating))
+        selectedRatings.includes(Math.round(product.rating)),
       );
       setFilteredProducts(filteredBySelectedRatings);
     }
@@ -245,7 +245,7 @@ export default function Products() {
                         >
                           <div>
                             {!cartItems.find(
-                              (item) => item.id === product.id
+                              (item) => item.id === product.id,
                             ) ? (
                               <button
                                 className={`btn btn-light btn-icon float-end ${
@@ -279,8 +279,8 @@ export default function Products() {
                             )}
                           </div>
                           <div>
-                            {!saveItems.find(
-                              (item) => item.id === product.id
+                            {!savedItems.find(
+                              (item) => item.id === product.id,
                             ) ? (
                               <button
                                 className={`btn btn-light btn-icon float-end ${

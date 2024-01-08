@@ -4,7 +4,6 @@ import Header from "./components/header/Header";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UsersList from "./pages/usersList/usersList";
-import ProductsSwitch from "./pages/productsSwitch/ProductsSwitch";
 import ProductsDetail from "./pages/productsDetail/ProductsDetail";
 import UserProfile from "./pages/userProfile/UserProfile";
 import Footer from "./components/footer/Footer";
@@ -17,11 +16,12 @@ import Contact from "./pages/contact/Contact";
 import Information from "./pages/information/Information";
 import Dashboard from "./pages/admin/dashboard.jsx";
 import Customers from "./pages/admin/customers.jsx";
-import AdminProducts from "./pages/admin/products";
-import Products from "./components/Products.jsx";
 import AuthContext from "./context/AuthContext.js";
 import Account from "./pages/admin/account.jsx";
-import ProductPage from "./pages/admin/products-page.jsx"; // Assuming this is the correct import
+import ProductPage from "./pages/admin/products-page.jsx";
+import ProductsSwitch from "./components/products/ProductsSwitch.jsx";
+import Products from "./components/products/Products.jsx";
+import AdminProducts from "./pages/admin/products.jsx";
 
 function getLayout(isAdmin, Component) {
   const { user, isLoadingUser } = useContext(AuthContext);
@@ -49,9 +49,13 @@ function getLayout(isAdmin, Component) {
 }
 
 const routes = [
-  { path: "/", component: Home },
   { path: "/admin/customers", component: Customers, isAdmin: true },
-  { path: "/admin/products", component: AdminProducts, isAdmin: true },
+  {
+    path: "/admin/products",
+    exact: true,
+    component: AdminProducts,
+    isAdmin: true,
+  },
   { path: "/admin/account", component: Account, isAdmin: true },
   {
     path: "/admin/customers/add",
@@ -78,6 +82,8 @@ const routes = [
     component: () => <ProductPage mode="create" />,
     isAdmin: true,
   },
+  { path: "/admin", component: Dashboard, isAdmin: true },
+  { path: "/", component: Home },
   { path: "/products", component: Products },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
@@ -91,7 +97,6 @@ const routes = [
   { path: "/saved", component: SavedItems },
   { path: "/contact", component: Contact },
   { path: "/info", component: Information },
-  { path: "/admin", component: Dashboard, isAdmin: true },
 ];
 
 function App() {

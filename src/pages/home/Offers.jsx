@@ -1,7 +1,7 @@
 import React from "react";
 import "./home.css";
 import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../context/cart";
+import { CartContext } from "../../context/CartContext.jsx";
 import { Link } from "react-router-dom";
 
 const Offers = () => {
@@ -40,7 +40,7 @@ const Offers = () => {
               <div className="col-lg-9 border-start">
                 <div className="row gx-0 bordered-cols">
                   {offers.map((offer) => (
-                    <div className="col-md col-sm-4 col-6">
+                    <div key={offer.id} className="col-md col-sm-4 col-6">
                       <figure
                         key={offer.id}
                         className="card-product product-sm p-2"

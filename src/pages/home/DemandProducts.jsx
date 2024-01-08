@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { CartContext } from "../../context/cart";
+import { CartContext } from "../../context/CartContext.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { SaveContext } from "../../context/saveContext";
@@ -9,7 +9,7 @@ import { SaveContext } from "../../context/saveContext";
 const DemandProducts = () => {
   const [demands, setDemands] = useState([]);
   const { cartItems, addToCart, notifyAddedToCart } = useContext(CartContext);
-  const { saveItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
+  const { savedItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
   const url = "https://dummyjson.com/products?limit=10";
   const fetchDemands = () => {
     return fetch(url)
@@ -42,19 +42,17 @@ const DemandProducts = () => {
           </div>
           <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
             {demands.map((demand) => (
-              <div className="col">
+              <div key={demand.id} className="col">
                 <figure className="card-product-grid card padding-card">
-                  <a href="#" className="img-wrap rounded bg-light">
-                    <Link
-                      to={`/product-detail/${demand.id}`}
-                      className="img-wrap"
-                    >
-                      <img
-                        src={demand.images[0]}
-                        className="mix-blend-multiply"
-                      />
-                    </Link>
-                  </a>
+                  <Link
+                    to={`/product-detail/${demand.id}`}
+                    className="img-wrap"
+                  >
+                    <img
+                      src={demand.images[0]}
+                      className="mix-blend-multiply"
+                    />
+                  </Link>
                   <figcaption className="mt-2">
                     <p className="mb-2 fw-bold price">
                       {demand.description.substring(0, 30)}
@@ -91,7 +89,7 @@ const DemandProducts = () => {
                         </button>
                       )}
 
-                      {!saveItems.find((item) => item.id === demand.id) ? (
+                      {!savedItems.find((item) => item.id === demand.id) ? (
                         <button
                           className={"btn btn-light btn-icon float-end"}
                           onClick={() => {

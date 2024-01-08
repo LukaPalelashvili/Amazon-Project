@@ -1,152 +1,124 @@
 import React, { useState } from "react";
-import api from "../provider/api";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  avatar: yup.string().url("Invalid URL").required("Avatar URL is required"),
+});
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    avatar: "",
-  });
+  const [apiResponse, setApiResponse] = useState({ message: "", type: "" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
 
-  const handleChange = (fieldName) => {
-    return (e) => {
-      setFormData({
-        ...formData,
-        [fieldName]: e.target.value,
+  const handleRegister = async (data) => {
+    try {
+      const response = await fetch("https://api.escuelajs.co/api/v1/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-    };
-  };
 
-  const handleRegister = () => {
-    api({
-      method: "post",
-      url: "https://api.escuelajs.co/api/v1/users/",
-      data: formData,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user: "",
-        email: "",
-        password: "",
-        avatar: "",
-        /* other user data */
-      }),
-    })
-      .then((res) => {
-        console.log("res", res);
-      })
-      .catch((err) => {
-        console.error(err);
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        setApiResponse({ message: responseData.message, type: "error" });
+        return;
+      }
+
+      setApiResponse({
+        message: "Registration successful. You can now login.",
+        type: "success",
       });
+    } catch (error) {
+      console.error("Network error:", error);
+      setApiResponse({ message: "Network error", type: "error" });
+    }
   };
 
   return (
-    <>
-      <section className="padding-y bg-light" style={{ minHeight: "90vh" }}>
-        <div className="container">
-          <div className="card shadow mx-auto" style={{ maxWidth: 400 }}>
-            <div className="card-body">
-              <h4 className="card-title mb-4">Sign in</h4>
-              <div className="row gx-2">
-                <div className="col-6 mb-3">
-                  <label className="form-label">First name </label>
-                  <input
-                    type="text"
-                    placeholder="text"
-                    value={formData.name}
-                    onChange={handleChange("name")}
-                    className="form-control"
-                  />
-                </div>
-                <div className="col-6 mb-3">
-                  <label className="form-label">Last name</label>
-                  <input type="text" className="form-control" name="lorem" />
-                </div>
-              </div>{" "}
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-                <input
-                  className="form-control"
-                  placeholder="Type email"
-                  type="text"
-                  value={formData.email}
-                  onChange={handleChange("email")}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Phone</label>
-                <div className="row gx-2">
-                  <div className="col-4">
-                    {" "}
-                    <input
-                      className="form-control"
-                      defaultValue={+998}
-                      type="text"
-                    />{" "}
-                  </div>
-                  <div className="col-8">
-                    {" "}
-                    <input
-                      className="form-control"
-                      placeholder="Phone"
-                      type="text"
-                    />{" "}
-                  </div>
-                </div>{" "}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Create password</label>
-                <input
-                  className="form-control"
-                  placeholder="At least 6 characters."
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange("password")}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Avatar</label>
-                <input
-                  className="form-control"
-                  placeholder=""
-                  value={formData.avatar}
-                  onChange={handleChange("avatar")}
-                  // type="password"
-                />
-              </div>
-              <div className="mb-4">
-                <button
-                  onClick={handleRegister}
-                  className="btn btn-primary w-100"
-                >
-                  Sign up
-                </button>
-              </div>
-              <div className="mb-4">
-                <label className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    defaultChecked=""
-                    defaultValue=""
-                  />
-                  <span className="form-check-label">
-                    I agree with Terms and Conditions{" "}
-                  </span>
-                </label>
-              </div>
-              <hr />
-              <p className="text-center mb-2">
-                Already have account? <Link to="/login">Sign In</Link>
-              </p>
-            </div>{" "}
-          </div>{" "}
-          <br />
-          <br />
-        </div>
-      </section>
-    </>
+    <Container className="py-5">
+      <Row className="justify-content-center">
+        <Col xs={12} sm={8} md={6}>
+          <h4 className="mb-4">Sign up</h4>
+          {apiResponse.message && (
+            <Alert variant={apiResponse.type}>{apiResponse.message}</Alert>
+          )}
+          <Form onSubmit={handleSubmit(handleRegister)}>
+            <Form.Group controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("name")}
+                isInvalid={!!errors.name}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.name?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                {...register("email")}
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                {...register("password")}
+                isInvalid={!!errors.password}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.password?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="avatar">
+              <Form.Label>Avatar URL</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("avatar")}
+                isInvalid={!!errors.avatar}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.avatar?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="terms">
+              <Form.Check
+                type="checkbox"
+                label="I agree with Terms and Conditions"
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Sign up
+            </Button>
+          </Form>
+          <p className="text-center mt-3">
+            Already have an account? <Link to="/login">Sign In</Link>
+          </p>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

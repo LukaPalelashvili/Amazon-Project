@@ -41,15 +41,17 @@ const AuthContextProvider = ({ children }) => {
 
   const login = async (data) => {
     try {
-      const loginResponse = await api.post(
-        "https://api.escuelajs.co/api/v1/auth/login",
-        data,
+      const loginResponse = await fetch(
+        "http://api.escuelajs.co/api/v1/auth/login",
+        { method: "POST", ...data },
       );
 
       if (loginResponse.status === 201) {
         const { access_token, refresh_token } = loginResponse.data;
 
-        const profileResponse = await api.get(
+        console.log("login", loginResponse.data);
+
+        const profileResponse = await fetch(
           "https://api.escuelajs.co/api/v1/auth/profile",
           {
             headers: {
@@ -59,6 +61,7 @@ const AuthContextProvider = ({ children }) => {
         );
 
         if (profileResponse.status === 200) {
+          console.log("success");
           setAuth({ access_token, refresh_token });
           setUser(loginResponse.data);
           setIsLoadingUser(false);

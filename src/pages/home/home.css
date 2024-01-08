@@ -11,3 +11,11 @@
 .padding-card {
   padding: 20px;
 }
+
+.carousel-item {
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-caption {
+  padding-bottom: 15%;
+}

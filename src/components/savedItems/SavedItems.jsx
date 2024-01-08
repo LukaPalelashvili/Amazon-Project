@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import "./savedItems.css";
 import EmptyCart from "../../images/empty-cart.png";
@@ -6,9 +6,19 @@ import { Link } from "react-router-dom";
 import { SaveContext } from "../../context/saveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { CartContext } from "../../context/CartContext.jsx";
+import { successAlert } from "../../helpers/index.js";
+import { ToastContainer } from "react-toastify";
 
 const SavedItems = ({}) => {
-  const { saveItems, removeFromSave } = useContext(SaveContext);
+  const { savedItems, removeFromSave } = useContext(SaveContext);
+  const { addToCart } = useContext(CartContext);
+
+  const handleMoveToCart = (item) => {
+    addToCart(item);
+    removeFromSave(item);
+    successAlert("Item moved to cart");
+  };
 
   return (
     <section className="py-4">
@@ -18,22 +28,27 @@ const SavedItems = ({}) => {
             <div className="card mb-4">
               <div className="card-body empty p-lg-4">
                 <h4 className="card-title mb-4">Saved Items</h4>
-                {saveItems.length > 0 ? (
-                  saveItems.map((item) => (
+                {savedItems.length > 0 ? (
+                  savedItems.map((item) => (
                     <article className="row mb-4" key={item.id}>
                       <div className="col-lg-9">
                         <figure className="d-flex align-items-start">
                           <div className="me-3 flex-shrink-0">
-                            <img
-                              src={item.images[0]}
-                              alt={item.title}
-                              className="cart-img"
-                            />
+                            <Link to={`/product-detail/${item.id}`}>
+                              <img
+                                src={item.images[0]}
+                                alt={item.title}
+                                className="cart-img"
+                              />
+                            </Link>
                           </div>
                           <figcaption className="info">
-                            <a className="title" href="/p-market-detail">
+                            <Link
+                              className="title"
+                              to={`/product-detail/${item.id}`}
+                            >
                               {item.title}
-                            </a>
+                            </Link>
 
                             <p className="text-muted">
                               <br />
@@ -48,12 +63,12 @@ const SavedItems = ({}) => {
                             >
                               Remove
                             </button>
-                            <Link
-                              to={`/product-detail/${item.id}`}
+                            <button
+                              onClick={() => handleMoveToCart(item)}
                               className="btn btn-light btn-sm"
                             >
-                              Watch Product
-                            </Link>
+                              Move to Cart
+                            </button>
                           </figcaption>
                         </figure>
                       </div>
@@ -83,6 +98,18 @@ const SavedItems = ({}) => {
         </div>
         <article className="rounded p-5 bg-gray-light"></article>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </section>
   );
 };
