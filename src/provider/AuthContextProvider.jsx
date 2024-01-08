@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }) => {
   const login = async (data) => {
     try {
       const loginResponse = await fetch(
-        "http://api.escuelajs.co/api/v1/auth/login",
+        "https://api.escuelajs.co/api/v1/auth/login",
         { method: "POST", ...data },
       );
 
