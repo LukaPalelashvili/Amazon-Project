@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import "./bootstrap.css";
 import { CartProvider } from "./context/CartContext.jsx";
-import { SaveProvider } from "./context/saveContext.jsx";
+import { SaveProvider } from "./context/SaveContext.jsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./provider/AuthContextProvider.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
