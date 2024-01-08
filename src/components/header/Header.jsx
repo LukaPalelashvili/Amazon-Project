@@ -96,7 +96,7 @@ const Header = () => {
               <div className="col-lg col-md order-lg-last">
                 <div className="float-md-end">
                   <Link
-                    to={"/profile"}
+                    to={"/login"}
                     data-bs-toggle="offcanvas"
                     className="btn btn-light"
                   >

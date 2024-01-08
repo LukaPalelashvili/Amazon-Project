@@ -88,7 +88,6 @@ const routes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/users-list", component: UsersList },
-  { path: "/products2", component: ProductsSwitch },
   { path: "/product-detail/:productId", component: ProductsDetail },
   { path: "/user-profile", component: UserProfile },
   { path: "/nav", component: Navigation },
