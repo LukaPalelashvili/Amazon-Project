@@ -9,10 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
   faUser,
-  faSearch,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
-
 import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
@@ -94,24 +92,44 @@ const Header = () => {
                 </div>
               </div>
               <div className="col-lg col-md order-lg-last">
-                <div className="float-md-end">
+                <div className="float-md-end d-flex gap-3">
+                  {user && user.role === "admin" && (
+                    <Link to={"/admin"} className="btn btn-primary text-nowrap">
+                      ADMIN
+                    </Link>
+                  )}
                   <Link
                     to={"/login"}
                     data-bs-toggle="offcanvas"
                     className="btn btn-light"
                   >
-                    {/*<FontAwesomeIcon*/}
-                    {/*  style={{ color: "gray" }}*/}
-                    {/*  className="fa me-1"*/}
-                    {/*  icon={faUser}*/}
-                    {/*/>{" "}*/}
-                    <img
-                      src={user?.avatar}
-                      className="rounded-circle me-1"
-                      style={{ width: "20px", height: "20px" }}
-                      alt={user?.name}
-                    />
-                    {user?.name || "Profile"}
+                    {user ? (
+                      <Link to={"/profile"}>
+                        <img
+                          src={user?.avatar}
+                          className="rounded-circle me-1"
+                          style={{ width: "20px", height: "20px" }}
+                          alt={user?.name}
+                        />
+                      </Link>
+                    ) : (
+                      <FontAwesomeIcon
+                        style={{ color: "gray" }}
+                        className="fa me-1"
+                        icon={faUser}
+                      />
+                    )}
+
+                    {user ? (
+                      <Link
+                        style={{ color: "inherit", textDecoration: "none" }}
+                        to={"/profile"}
+                      >
+                        {user.name}
+                      </Link>
+                    ) : (
+                      "Sign In"
+                    )}
                   </Link>
                   <Link to={"/saved"} className="btn btn-light shadow-sm">
                     <span className="ms-1 d-none d-sm-inline-block">

@@ -12,7 +12,6 @@ const Brands = ({ onBrandSelect }) => {
       .then((res) => res.json())
       .then((products) => {
         const allBrands = products.products.map((product) => product.brand);
-        // Use Set to get unique brand names
         const uniqueBrandSet = new Set(allBrands);
         const uniqueBrandArray = Array.from(uniqueBrandSet);
         setUniqueBrands(uniqueBrandArray);
@@ -30,15 +29,14 @@ const Brands = ({ onBrandSelect }) => {
   return (
     <>
       <article className="p-3 p-lg-4 border-bottom">
-        <a
-          href="#"
+        <div
           className="d-flex text-decoration-none justify-content-between text-dark"
           data-bs-toggle="collapse"
           data-bs-target="#collapse_aside2"
         >
           <strong>Brands </strong>
           <FontAwesomeIcon className="icon-control" icon={faChevronDown} />
-        </a>
+        </div>
         <div className="collapse show" id="collapse_aside2">
           <div className="pt-3">
             {uniqueBrands.map((brand) => (

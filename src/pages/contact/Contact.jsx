@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CotactImg from "../../images/undraw-contact.svg";
+import ContactImg from "../../images/undraw-contact.svg";
 
 const Contact = () => {
   const [isMessageSent, setMessageSent] = useState(false);
@@ -23,7 +23,7 @@ const Contact = () => {
                     Voluptas debitis, fugit natus?
                   </p>
                   <p>
-                    <img src={CotactImg} alt="Image" className="img-fluid" />
+                    <img src={ContactImg} alt="Image" className="img-fluid" />
                   </p>
                 </div>
                 <div className="col-md-6">

@@ -9,7 +9,6 @@ const HeaderSearch = ({
   onChangeCallback,
   onFocus,
   onBlur,
-  onItemClick,
 }) => {
   const handleChange = (e) => {
     const inputValue = e.target.value;

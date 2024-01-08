@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import "./savedItems.css";
 import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
 import { SaveContext } from "../../context/SaveContext";
@@ -80,9 +79,13 @@ const SavedItems = ({}) => {
                     </article>
                   ))
                 ) : (
-                  <div className="emtpty-cart">
-                    <img src={EmptyCart} alt="Empty Cart" />
-                    <p> Your Have No Save Product </p>
+                  <div className="text-center">
+                    <img
+                      src={EmptyCart}
+                      alt="Empty Cart"
+                      className="img-fluid mb-3 w-25"
+                    />
+                    <p className="h5 text-muted">Your saved items is empty.</p>
                   </div>
                 )}
 

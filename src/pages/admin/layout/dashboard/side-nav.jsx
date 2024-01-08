@@ -1,13 +1,14 @@
-import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
 import {
   Box,
+  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { SideNavItem } from "./side-nav-item";
 import { Link, useLocation } from "react-router-dom";
 import { items } from "./config.jsx";
@@ -77,6 +78,13 @@ export const SideNav = (props) => {
                 {ucFirst(user?.role)}
               </Typography>
             </div>
+            <Tooltip title="Go to website">
+              <Link to="/">
+                <Button color="primary" size="small" variant="contained">
+                  <ExitToAppIcon />
+                </Button>
+              </Link>
+            </Tooltip>
           </Box>
         </Box>
         <Divider sx={{ borderColor: neutral[700] }} />

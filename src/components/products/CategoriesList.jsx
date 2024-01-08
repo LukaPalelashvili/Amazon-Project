@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { ucFirst } from "../../helpers/index.js";
 
 const CategoryList = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const url = "https://dummyjson.com/products/categories";
@@ -28,16 +29,16 @@ const CategoryList = ({ onSelectCategory }) => {
   return (
     <article className="p-3 p-lg-4 border-bottom">
       <a>
-        <strong>categories </strong>
+        <strong>Categories </strong>
       </a>
       <FontAwesomeIcon className="icon-control" icon={faChevronDown} />
 
       <div className="collapse show" id="collapse_aside1">
         <div className="pt-3">
           <button className="category-button" onClick={showAllCategories}>
-            Show All Categories
+            All categories
           </button>
-          <ul value={selectedCategory} className="list-menu mb-0">
+          <ul className="list-menu mb-0">
             {categories.map((category) => (
               <li key={category} value={category} className="category-list">
                 <button
@@ -45,7 +46,7 @@ const CategoryList = ({ onSelectCategory }) => {
                   onClick={(e) => handleCategoryChange(e.target.value)}
                   value={category}
                 >
-                  {category}
+                  {ucFirst(category)}
                 </button>
               </li>
             ))}

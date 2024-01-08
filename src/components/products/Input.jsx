@@ -13,7 +13,7 @@ const Input = ({ onChangeCallback }) => {
 
   return (
     <div className="input-group">
-      <div className="form-outline" data-mdb-input-init>
+      <div className="form-outline">
         <input
           id="search-input"
           type="search"

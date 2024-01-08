@@ -3,6 +3,7 @@ import api from "./api";
 import useLocalStorage from "../hooks/UseLocalStorage";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AuthContextProvider = ({ children }) => {
   const [auth, setAuth] = useLocalStorage("auth", {});
@@ -41,35 +42,35 @@ const AuthContextProvider = ({ children }) => {
 
   const login = async (data) => {
     try {
-      const loginResponse = await fetch(
+      const loginResponse = await api.post(
         "https://api.escuelajs.co/api/v1/auth/login",
-        { method: "POST", ...data },
+        data,
       );
 
       if (loginResponse.status === 201) {
         const { access_token, refresh_token } = loginResponse.data;
 
-        console.log("login", loginResponse.data);
+        setAuth({ access_token, refresh_token });
 
-        const profileResponse = await fetch(
+        const profileResponse = await api.get(
           "https://api.escuelajs.co/api/v1/auth/profile",
           {
             headers: {
-              Authorization: `Bearer ${access_token}`,
+              Authorization: `Bearer ${auth.access_token}`,
             },
           },
         );
 
         if (profileResponse.status === 200) {
-          console.log("success");
-          setAuth({ access_token, refresh_token });
           setUser(loginResponse.data);
           setIsLoadingUser(false);
           navigate("/");
         }
+      } else {
+        toast.error("Error logging in");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      toast.error("Error logging in");
     }
   };
 

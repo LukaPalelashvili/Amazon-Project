@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../context/CartContext.jsx";
+import React, { useState, useEffect, useContext } from "react";
 import { SaveContext } from "../../context/SaveContext.jsx";
 import "./products.css";
 import Input from "./Input.jsx";
@@ -7,23 +6,17 @@ import CategoryList from "./CategoriesList.jsx";
 import { Link } from "react-router-dom";
 import Brands from "./Brands.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faGrip,
-  faCartShopping,
-  faBookmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faGrip, faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { useForceUpdate } from "../../hooks/useForceUpdate.jsx";
+import { faBookmark as faSolidBookmark } from "@fortawesome/free-regular-svg-icons";
 import Ratings from "./Ratings.jsx";
 import Price from "./Price.jsx";
-import ActiveStars from "../../images/stars-active.svg";
-import DisableStars from "../../images/stars-disable.svg";
+import { toast, ToastContainer } from "react-toastify";
+import { StarRating } from "../stars/StarRating.jsx";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const { savedItems, addToSave, removeFromSave } = useContext(SaveContext);
-  const [sortBy, setSortBy] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -80,21 +73,6 @@ export default function Products() {
     setFilteredProducts(filteredItems);
   };
 
-  const handleSortByChange = (sortBy) => {
-    let sortedProducts = products;
-    switch (sortBy) {
-      case "incr-by-price":
-        sortedProducts = products.sort((a, b) => a.price - b.price);
-        setProducts([...sortedProducts]);
-        break;
-      case "decr-by-price":
-        sortedProducts = products.sort((a, b) => b.price - a.price);
-        setProducts([...sortedProducts]);
-        break;
-      default:
-    }
-  };
-
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
     setProducts(storedProducts);
@@ -126,22 +104,42 @@ export default function Products() {
     }
   }, [selectedBrands, products]);
 
-  const renderStarRating = (rating) => {
-    const starPercentage = (rating / 5) * 100;
-    return (
-      <ul className="rating-stars">
-        <li className="stars-active" style={{ width: `${starPercentage}%` }}>
-          <img src={ActiveStars} alt="" />
-        </li>
-        <li>
-          <img src={DisableStars} alt="" />
-        </li>
-      </ul>
+  const handleRatingSelect = (ratings) => {
+    setSelectedRatings(ratings);
+  };
+
+  const handlePriceChange = (price) => {
+    setFilteredProducts(
+      products.filter(
+        (product) => product.price <= price[1] && product.price >= price[0],
+      ),
     );
   };
 
-  const handleRatingSelect = (ratings) => {
-    setSelectedRatings(ratings);
+  const handleSortByChange = (sortBy) => {
+    let sortedProducts = products;
+    switch (sortBy) {
+      case "incr-by-price":
+        sortedProducts = products.sort((a, b) => a.price - b.price);
+        setFilteredProducts([...sortedProducts]);
+        break;
+      case "decr-by-price":
+        sortedProducts = products.sort((a, b) => b.price - a.price);
+        setFilteredProducts([...sortedProducts]);
+        break;
+      default:
+        setFilteredProducts(products);
+    }
+  };
+
+  const handleProductSave = (product) => {
+    if (savedItems.some((item) => item.id === product.id)) {
+      removeFromSave(product);
+      toast.success("Removed from saved items");
+    } else {
+      addToSave(product);
+      toast.success("Added to saved items");
+    }
   };
 
   useEffect(() => {
@@ -159,36 +157,45 @@ export default function Products() {
     <>
       <section className="padding-y">
         <div className="container">
-          <header className="">
-            <div className="btn-group">
-              <a
-                href="#"
-                className={`btn btn-light ${isGrid ? "active" : ""}`}
-                data-bs-toggle="tooltip"
-                title=""
-                data-bs-original-title="Grid view"
-                onClick={toggleLayout}
-              >
-                <FontAwesomeIcon icon={faBars} />
-              </a>
-              <a
-                href="#"
-                className={`btn btn-light ${isGrid ? "active" : ""}`}
-                data-bs-toggle="tooltip"
-                title=""
-                data-bs-original-title="Grid view"
-                onClick={toggleLayout}
-              >
-                <FontAwesomeIcon icon={faGrip} />
-              </a>
+          <header className="card mb-3">
+            <div className="p-3 d-md-flex align-items-center">
+              <span className="d-block py-2">
+                {filteredProducts.length} items in{" "}
+                <b>{selectedCategory || "all categories"}</b>{" "}
+              </span>
+              <div className="ms-auto d-md-flex align-items-center gap-3">
+                <Input onChangeCallback={filterItems} />
+                <select
+                  onChange={(e) => {
+                    handleSortByChange(e.target.value);
+                  }}
+                  className="form-select d-inline-block w-auto"
+                >
+                  <option value={"incr-by-price"}>Price: low to high</option>
+                  <option value={"decr-by-price"}>Price: high to low</option>
+                </select>
+                <div className="btn-group">
+                  <button
+                    className={`btn btn-light ${!isGrid ? "active" : ""}`}
+                    data-bs-toggle="tooltip"
+                    title=""
+                    data-bs-original-title="List view"
+                    onClick={toggleLayout}
+                  >
+                    <FontAwesomeIcon icon={faBars} />
+                  </button>
+                  <button
+                    className={`btn btn-light ${isGrid ? "active" : ""}`}
+                    data-bs-toggle="tooltip"
+                    title=""
+                    data-bs-original-title="Grid view"
+                    onClick={toggleLayout}
+                  >
+                    <FontAwesomeIcon icon={faGrip} />
+                  </button>
+                </div>{" "}
+              </div>
             </div>
-            <div className="btn-group mb-3 mb-md-0">
-              <Input
-                // products={filteredProducts}
-                onChangeCallback={filterItems}
-              />
-            </div>
-            <Price />
           </header>
           <div className="row">
             <aside className="col-lg-3">
@@ -197,6 +204,7 @@ export default function Products() {
                 className="collapse card bg-light d-lg-block mb-5"
               >
                 <CategoryList onSelectCategory={handleCategorySelect} />
+                <Price onPriceChange={handlePriceChange} />
                 <Brands onBrandSelect={handleBrandSelect} />
                 <Ratings onRatingSelect={handleRatingSelect} />
               </div>
@@ -231,6 +239,7 @@ export default function Products() {
                             <Link to={`/product-detail/${product.id}`}>
                               <img
                                 className="product-img mix-blend-multiply"
+                                alt={product.title}
                                 src={product.images[0]}
                               />
                             </Link>
@@ -242,81 +251,29 @@ export default function Products() {
                           }`}
                         >
                           <div>
-                            {!cartItems.find(
-                              (item) => item.id === product.id,
-                            ) ? (
-                              <button
-                                className={`btn btn-light btn-icon float-end ${
-                                  isGrid
-                                    ? "btn btn-light btn-icon float-end"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  addToCart(product);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faCartShopping}
-                                ></FontAwesomeIcon>
-                              </button>
-                            ) : (
-                              <button
-                                className={`btn btn-light btn-icon float-end ${
-                                  isGrid
-                                    ? "btn btn-light btn-icon float-end"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  addToCart(product);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faCartShopping}
-                                ></FontAwesomeIcon>
-                              </button>
-                            )}
+                            <button
+                              className={`btn btn-light btn-icon float-end ${
+                                isGrid ? "btn btn-light btn-icon float-end" : ""
+                              }`}
+                              onClick={() => handleProductSave(product)}
+                            >
+                              <FontAwesomeIcon
+                                icon={
+                                  savedItems.some(
+                                    (item) => item.id === product.id,
+                                  )
+                                    ? faBookmark
+                                    : faSolidBookmark
+                                }
+                              />
+                            </button>
                           </div>
-                          <div>
-                            {!savedItems.find(
-                              (item) => item.id === product.id,
-                            ) ? (
-                              <button
-                                className={`btn btn-light btn-icon float-end ${
-                                  isGrid
-                                    ? "btn btn-light btn-icon float-end"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  addToSave(product);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faBookmark}
-                                ></FontAwesomeIcon>
-                              </button>
-                            ) : (
-                              <button
-                                className={`btn btn-light btn-icon float-end ${
-                                  isGrid
-                                    ? "btn btn-light btn-icon float-end"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  addToSave(product);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faBookmark}
-                                ></FontAwesomeIcon>
-                              </button>
-                            )}
-                          </div>
-                          <p href="#" className="text-dark">
-                            {product.title.substring(0, 100)}
+                          <p className="text-dark">
+                            {product.title.substring(0, 10)}
                           </p>
                           <div className="rating-wrap mb-2">
-                            <span className="label-rating text-warning">
-                              {renderStarRating(Math.round(product.rating))}
+                            <span className="text-warning">
+                              <StarRating rating={product.rating} />
                             </span>
                           </div>
                           <div className="mb-3 h5">
@@ -330,7 +287,7 @@ export default function Products() {
                             to={`/product-detail/${product.id}`}
                           >
                             <p className="text-muted">
-                              {product.description.slice(0, 100)}
+                              {product.description.substring(0, 30)}
                             </p>
                           </Link>
                         </div>
@@ -354,6 +311,18 @@ export default function Products() {
           </div>
         </div>
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

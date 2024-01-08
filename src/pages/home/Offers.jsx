@@ -1,12 +1,10 @@
 import React from "react";
 import "./home.css";
-import { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../context/CartContext.jsx";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
-  const { addToCart, notifyAddedToCart } = useContext(CartContext);
 
   const url = "https://dummyjson.com/products?limit=5";
   const fetchOffers = () => {
@@ -52,9 +50,9 @@ const Offers = () => {
                           <img className="offers-img" src={offer.images[0]} />
                         </Link>
                         <div className="p-3 text-center">
-                          <a href="#" className="title">
+                          <p className="title">
                             {offer.title.substring(0, 10)}
-                          </a>
+                          </p>
                         </div>
                         <div className="justify-content-center">
                           <div className=" text-center">

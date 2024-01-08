@@ -1,15 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./home.css";
-import { CartContext } from "../../context/CartContext.jsx";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { SaveContext } from "../../context/SaveContext";
 
 const NewProducts = () => {
   const [products, setProducts] = useState([]);
-  const { cartItems, addToCart, notifyAddedToCart } = useContext(CartContext);
-  const { savedItems, addToSave, notifyAddedToSave } = useContext(SaveContext);
 
   const url = "https://dummyjson.com/products?limit=10";
 
@@ -51,54 +45,6 @@ const NewProducts = () => {
                       <span className="price">${product.price}</span>
                     </div>
                     <p className="title">{product.title.substring(0, 60)}</p>
-
-                    <div className="d-flex justify-content-between">
-                      {!cartItems.find((item) => item.id === product.id) ? (
-                        <button
-                          className={"btn btn-light btn-icon float-end"}
-                          onClick={() => {
-                            addToCart(product);
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faCartShopping}
-                          ></FontAwesomeIcon>
-                        </button>
-                      ) : (
-                        <button
-                          disabled
-                          className={"btn btn-light btn-icon float-end "}
-                          onClick={() => {
-                            addToCart(product);
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faCartShopping}
-                          ></FontAwesomeIcon>
-                        </button>
-                      )}
-
-                      {!savedItems.find((item) => item.id === product.id) ? (
-                        <button
-                          className={"btn btn-light btn-icon float-end"}
-                          onClick={() => {
-                            addToSave(product);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faBookmark} />
-                        </button>
-                      ) : (
-                        <button
-                          disabled
-                          className={"btn btn-light btn-icon float-end"}
-                          onClick={() => {
-                            addToSave(product);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faBookmark} />
-                        </button>
-                      )}
-                    </div>
                   </figcaption>
                 </figure>
               </div>

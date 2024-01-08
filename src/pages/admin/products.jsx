@@ -30,14 +30,6 @@ const Products = () => {
     setPage(0);
   }, []);
 
-  const handleEdit = (productId) => {
-    console.log("Edit product", productId);
-  };
-
-  const handleDelete = (productId) => {
-    console.log("Delete product", productId);
-  };
-
   const handleAddClick = () => {
     navigate(`/admin/products/add`);
   };

@@ -17,7 +17,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
 import { ucFirst } from "../../../../helpers/index.js";
 
 const schema = yup
@@ -29,11 +28,6 @@ const schema = yup
       .positive("Price must be positive"),
     description: yup.string().required("Description is required"),
     category: yup.string().required("Category is required"),
-    images: yup
-      .array()
-      .of(yup.string().url("Must be a valid URL").required())
-      .min(1, "At least one image URL is required")
-      .required("At least one image URL is required"),
   })
   .required();
 
@@ -48,7 +42,6 @@ export const ProductDetailsForm = ({ product, mode }) => {
 
   const {
     register,
-    unregister,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
@@ -93,7 +86,11 @@ export const ProductDetailsForm = ({ product, mode }) => {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productData),
+        body: JSON.stringify({
+          ...productData,
+          categoryId: 3,
+          images: ["https://www.gravatar.com/avatar/"],
+        }),
       });
 
       if (!response.ok) {
@@ -105,14 +102,12 @@ export const ProductDetailsForm = ({ product, mode }) => {
         error: false,
         message: "Product created successfully",
       });
-      // Additional actions after successful creation, like redirecting
     } catch (error) {
       setSnackbar({ open: true, error: true, message: error.message });
     }
   };
 
   useEffect(() => {
-    // If editing, prefill the image URLs from the product data
     if (mode === "update" && product.images) {
       setImageUrls(product.images);
     }
@@ -132,14 +127,6 @@ export const ProductDetailsForm = ({ product, mode }) => {
     const newImageUrls = imageUrls.filter((_, idx) => idx !== index);
     setImageUrls(newImageUrls);
   };
-
-  useEffect(() => {
-    // Register the image URLs fields
-    console.log("imageUrls", imageUrls);
-    imageUrls.forEach((_, index) => {
-      register(`images[${index}]`);
-    });
-  }, [register, unregister, imageUrls]);
 
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
@@ -166,7 +153,6 @@ export const ProductDetailsForm = ({ product, mode }) => {
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
-              {/* Add TextFields for title, price, and description */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -224,7 +210,6 @@ export const ProductDetailsForm = ({ product, mode }) => {
                     label={`Image URL ${index + 1}`}
                     value={url}
                     onChange={(e) => handleImageUrlChange(e, index)}
-                    // This will only show an error on the first image field
                     helperText={index === 0 ? errors.images?.[0]?.message : ""}
                     error={!!(index === 0 && errors.images?.[0])}
                   />

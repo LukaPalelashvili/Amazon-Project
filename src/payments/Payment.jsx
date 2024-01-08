@@ -23,7 +23,7 @@ const SuccessMessage = () => {
 
 const Payment = () => {
   const [paymentError, setPaymentError] = useState(null);
-  const [paymentSuccess, setPaymentSuccess] = useState(false); // Here's the state for tracking payment success
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const { clearCart } = useContext(CartContext);
@@ -61,10 +61,8 @@ const Payment = () => {
 
     if (result.error) {
       setPaymentError(result.error.message);
-      setPaymentSuccess(false); // Ensure payment success is false if there's an error
+      setPaymentSuccess(false);
     } else {
-      // Here you would typically handle the successful payment method creation
-      console.log("Payment Method ID:", result.paymentMethod.id);
       clearCart();
       setPaymentSuccess(true);
       setPaymentError(null);

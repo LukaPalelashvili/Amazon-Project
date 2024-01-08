@@ -1,29 +1,27 @@
 import React, { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/CartContext.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faBookmark,
-  faBookBookmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as faSolidBookmark } from "@fortawesome/free-regular-svg-icons";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SaveContext } from "../../context/SaveContext.jsx";
+import { StarRating } from "../../components/stars/StarRating.jsx";
+import Modal from "react-bootstrap/Modal";
+import AuthContext from "../../context/AuthContext.js";
 
-const ProductsDetail = (products) => {
+const ProductsDetail = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const { addToSave, isItemInSave, removeFromSave } = useContext(SaveContext);
-
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
-
-  console.log("cartItems", cartItems);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +54,11 @@ const ProductsDetail = (products) => {
   };
 
   const handleSaveClick = () => {
+    if (!user) {
+      setIsSignInModalOpen(true);
+      return;
+    }
+
     if (isItemInSave(product)) {
       removeFromSave(product);
       toast.success("Item removed from saved items");
@@ -65,13 +68,17 @@ const ProductsDetail = (products) => {
     }
   };
 
+  const handleCloseSignInModal = () => {
+    setIsSignInModalOpen(false);
+  };
+
   if (!product) {
     return <div>Product not found</div>;
   }
 
   return (
     <>
-      <section className="padding-y">
+      <section className="padding-y" style={{ minHeight: "90vh" }}>
         <div className="container">
           <div className="row">
             <aside className="col-lg-6">
@@ -106,17 +113,7 @@ const ProductsDetail = (products) => {
               <article className="ps-lg-3">
                 <h4 className="title text-dark">{product.title}</h4>
                 <div className="rating-wrap my-3">
-                  <ul className="rating-stars">
-                    <li style={{ width: "80%" }} className="stars-active">
-                      {" "}
-                      {/* <img src="images/misc/stars-active.svg" alt="" />{" "} */}
-                    </li>
-                    <li>
-                      {" "}
-                      {/* <img src="images/misc/starts-disable.svg" alt="" />{" "} */}
-                    </li>
-                  </ul>
-                  <b className="label-rating text-warning"> {product.rating}</b>
+                  <StarRating rating={product.rating} />
                 </div>
                 <div className="mb-2">
                   <var className="price h5">${product.price}</var>
@@ -216,6 +213,25 @@ const ProductsDetail = (products) => {
         pauseOnHover
         theme="light"
       />
+      <Modal show={isSignInModalOpen} onHide={handleCloseSignInModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign In Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>You need to sign in to save this product for later.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="btn btn-secondary"
+            onClick={handleCloseSignInModal}
+          >
+            Close
+          </button>
+          <Link className="btn btn-primary" to="/login">
+            Sign In
+          </Link>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

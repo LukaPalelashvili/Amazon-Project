@@ -11,7 +11,7 @@ const Ratings = ({ onRatingSelect }) => {
   const handleRatingChange = (rating) => {
     if (selectedRatings.includes(rating)) {
       const updatedRatings = selectedRatings.filter(
-        (selectedRating) => selectedRating !== rating
+        (selectedRating) => selectedRating !== rating,
       );
       setSelectedRatings(updatedRatings);
     } else {
@@ -40,15 +40,10 @@ const Ratings = ({ onRatingSelect }) => {
   return (
     <>
       <article className="p-3 p-lg-4">
-        <a
-          href="#"
-          className="d-flex text-decoration-none justify-content-between text-dark"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapse_aside5"
-        >
+        <div className="d-flex text-decoration-none justify-content-between text-dark">
           <strong>Rating </strong>
           <FontAwesomeIcon icon={faChevronDown} className="icon-control" />
-        </a>
+        </div>
         <div className="collapse show" id="collapse_aside5">
           <div className="pt-3">
             {[5, 4, 3, 2, 1].map((rating) => (

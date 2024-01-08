@@ -10,7 +10,7 @@ import {
 import { Layout } from "./layout/dashboard/layout.jsx";
 import { ProductProfile } from "./sections/products/product-profile.jsx";
 import { ProductDetailsForm } from "./sections/products/product-detail-form.jsx";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const SkeletonLoader = ({ width, height }) => (
   <Skeleton variant="rectangular" width={width} height={height} />
@@ -30,7 +30,6 @@ const ProductPage = ({ mode = "update" }) => {
   );
   const [isLoading, setIsLoading] = useState(mode === "update");
 
-  //get id from the url /admin/products/edit/:id
   const { id: productId } = useParams();
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const ProductPage = ({ mode = "update" }) => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `https://dummyjson.com/products/${productId}`, // Update this URL to your actual product API`,
+            `https://dummyjson.com/products/${productId}`,
           );
           const data = await response.json();
           setProductData(data);

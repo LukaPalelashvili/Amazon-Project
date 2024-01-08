@@ -27,8 +27,6 @@ const Page = ({ mode, isAdmin }) => {
 
   let userId = isAdmin ? user.id : mode === "update" ? Number(params.id) : "";
 
-  console.log("userId", userId);
-
   useEffect(() => {
     if (mode === "update") {
       const fetchData = async () => {

@@ -1,4 +1,3 @@
-// stripe.js (Create a new file for Stripe configuration)
 import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(

@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const OverviewLatestCustomers = (props) => {
-  const { products = [], sx } = props;
+  const { sx } = props;
   const [customers, setCustomers] = useState([]);
   const [visibleActions, setVisibleActions] = useState(null);
   const listRefs = useRef({});

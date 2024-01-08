@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./home.css";
-import { Link } from "react-router-dom"; // Import your custom CSS for the carousel transitions
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -64,7 +64,6 @@ const Hero = () => {
                 />
                 <div className="carousel-caption d-flex flex-column justify-content-end align-items-center mb-3">
                   {
-                    // Add H1 and P to the first slide
                     <>
                       <h1>{heroTexts[index].h1}</h1>
                       <p>{heroTexts[index].p}</p>

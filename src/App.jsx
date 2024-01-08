@@ -3,13 +3,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/header/Header";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import UsersList from "./pages/usersList/usersList";
 import ProductsDetail from "./pages/productsDetail/ProductsDetail";
-import UserProfile from "./pages/userProfile/UserProfile";
+import { UserProfile } from "./pages/user/profile";
 import Footer from "./components/footer/Footer";
-import Navigation from "./pages/Navigation";
 import Home from "./pages/home/Home";
-import NewProducts from "./pages/home/NewProducts";
 import Cart from "./components/cart/Cart";
 import SavedItems from "./components/savedItems/SavedItems";
 import Contact from "./pages/contact/Contact";
@@ -19,7 +16,6 @@ import Customers from "./pages/admin/customers.jsx";
 import AuthContext from "./context/AuthContext.js";
 import Account from "./pages/admin/account.jsx";
 import ProductPage from "./pages/admin/products-page.jsx";
-import ProductsSwitch from "./components/products/ProductsSwitch.jsx";
 import Products from "./components/products/Products.jsx";
 import AdminProducts from "./pages/admin/products.jsx";
 
@@ -87,15 +83,12 @@ const routes = [
   { path: "/products", component: Products },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
-  { path: "/users-list", component: UsersList },
   { path: "/product-detail/:productId", component: ProductsDetail },
-  { path: "/user-profile", component: UserProfile },
-  { path: "/nav", component: Navigation },
-  { path: "/new", component: NewProducts },
   { path: "/cart", component: Cart },
   { path: "/saved", component: SavedItems },
   { path: "/contact", component: Contact },
   { path: "/info", component: Information },
+  { path: "/profile", component: UserProfile },
 ];
 
 function App() {

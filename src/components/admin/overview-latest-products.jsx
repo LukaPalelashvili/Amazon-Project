@@ -15,11 +15,9 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Scrollbar } from "./scrollbar.js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { error, success } from "../../theme/colors.js";
-import EditIcon from "@mui/icons-material/Edit.js";
+import { success } from "../../theme/colors.js";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 export const OverviewLatestProducts = () => {
@@ -55,7 +53,7 @@ export const OverviewLatestProducts = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map(({ id, stock, brand, name, price, category }) => {
+            {products.map(({ id, brand, price, category }) => {
               return (
                 <TableRow hover key={id}>
                   <TableCell>{id}</TableCell>

@@ -34,8 +34,6 @@ const Page = () => {
     setSearchQuery(event.target.value);
   };
 
-  console.log("searchQuery", searchQuery);
-
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
   }, []);

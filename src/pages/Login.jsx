@@ -3,6 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import authContext from "../context/AuthContext";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ToastContainer } from "react-toastify";
+
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().min(6).required(),
+  agreeTerms: yup.bool().required().oneOf([true], "Terms must be accepted"),
+});
 
 const Login = () => {
   const { auth } = useContext(authContext);
@@ -19,7 +28,9 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (data) => {
     login(data);
@@ -27,7 +38,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="padding-y bg-light" style={{ minHeight: "90vh" }}>
+      <section className="padding-y bg-light" style={{ minHeight: "85vh" }}>
         <div className="container">
           <div className="card shadow mx-auto" style={{ maxWidth: 400 }}>
             <div className="card-body">
@@ -41,14 +52,13 @@ const Login = () => {
                     }`}
                     placeholder="Type email"
                     type="email"
-                    {...register("email", {
-                      required: true,
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address",
-                      },
-                    })}
+                    {...register("email")}
                   />
+                  {errors.email && (
+                    <div className="invalid-feedback">
+                      {errors.email.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mb-3">
@@ -59,8 +69,13 @@ const Login = () => {
                     }`}
                     placeholder="Enter Password."
                     type="password"
-                    {...register("password", { required: true })}
+                    {...register("password")}
                   />
+                  {errors.password && (
+                    <div className="invalid-feedback">
+                      {errors.password.message}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mb-3">
@@ -94,6 +109,18 @@ const Login = () => {
           </div>{" "}
         </div>
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };
