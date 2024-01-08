@@ -4,7 +4,7 @@ import { CartContext } from "../../context/CartContext.jsx";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { SaveContext } from "../../context/saveContext";
+import { SaveContext } from "../../context/SaveContext";
 
 const NewProducts = () => {
   const [products, setProducts] = useState([]);

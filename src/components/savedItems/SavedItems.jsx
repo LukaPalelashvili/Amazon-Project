@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./savedItems.css";
 import EmptyCart from "../../images/empty-cart.png";
 import { Link } from "react-router-dom";
-import { SaveContext } from "../../context/saveContext";
+import { SaveContext } from "../../context/SaveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { CartContext } from "../../context/CartContext.jsx";

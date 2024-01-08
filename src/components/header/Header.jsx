@@ -4,7 +4,7 @@ import "./header.css";
 import AuthContext from "../../context/AuthContext";
 import logo from "../../images/logo-2.svg";
 import { CartContext } from "../../context/CartContext.jsx";
-import { SaveContext } from "../../context/saveContext";
+import { SaveContext } from "../../context/SaveContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,

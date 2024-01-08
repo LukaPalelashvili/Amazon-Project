@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../context/CartContext.jsx";
-import { SaveContext } from "../../context/saveContext.jsx";
+import { SaveContext } from "../../context/SaveContext.jsx";
 import "./products.css";
 import TopPanel from "../topPanel/TopPanel.jsx";
 import Input from "./Input.jsx";
